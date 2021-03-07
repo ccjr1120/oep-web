@@ -5,3 +5,10 @@
 * 初始化项目时,tsx文件报错。删除node_modules后重新执行npm install消除错误，教程中也有提到一些人可能还需要删掉package-lock.json
 * ant-design   
 npm install antd   
+* sass
+npm install sass    
+参考该[教程](https://www.jianshu.com/p/d3fbd9774931)
+* react-router
+npm install react-router @types/react-router-dom   
+不引入后者会导致import react-router时报错
+
