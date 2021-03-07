@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Layout } from "antd";
-import "./App.css";
+import "./App.scss";
 
 const { Header, Sider, Content } = Layout;
 const layoutStyle: React.CSSProperties = {
