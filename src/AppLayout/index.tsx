@@ -1,5 +1,9 @@
 import { Layout } from "antd";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import MyHeader from "./Header";
 import MySidebar from "./Sidebar";
+import Main from "./Main";
+import MenuManage from "../pages/system/MenuManage";
 
 const { Header, Sider, Content } = Layout;
 
@@ -10,9 +14,16 @@ const AppLayout = () => {
         <MySidebar />
       </Sider>
       <Layout>
-        <Header>Header</Header>
-        <Content>Content</Content>
+        <Header>
+          <MyHeader />
+        </Header>
+        <Content>
+          <Main />
+        </Content>
       </Layout>
+      <Router>
+        <Route path="/menuManage" component={MenuManage}></Route>
+      </Router>
     </Layout>
   );
 };

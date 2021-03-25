@@ -1,5 +1,11 @@
-const MyMain = () => {
-  <div>1</div>;
+import MenuManage from "../../pages/system/MenuManage";
+
+const Main = () => {
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
-export default MyMain;
+export default Main;

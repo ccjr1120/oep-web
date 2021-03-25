@@ -6,6 +6,7 @@ import {
   ContainerOutlined,
   MailOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 
@@ -37,13 +38,9 @@ const MySidebar = () => {
           <Menu.Item key="7">Option 7</Menu.Item>
           <Menu.Item key="8">Option 8</Menu.Item>
         </SubMenu>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
-          <Menu.Item key="9">Option 9</Menu.Item>
-          <Menu.Item key="10">Option 10</Menu.Item>
-          <SubMenu key="sub3" title="Submenu">
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </SubMenu>
+        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="系统管理">
+          <Menu.Item key="9"> 菜单管理</Menu.Item>
+          <Menu.Item key="10">账号管理</Menu.Item>
         </SubMenu>
       </Menu>
     </div>
