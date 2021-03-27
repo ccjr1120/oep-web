@@ -39,7 +39,9 @@ const MySidebar = () => {
           <Menu.Item key="8">Option 8</Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<AppstoreOutlined />} title="系统管理">
-          <Menu.Item key="9"> 菜单管理</Menu.Item>
+          <Menu.Item key="9">
+            <Link to="/menuManage"> 菜单管理</Link>
+          </Menu.Item>
           <Menu.Item key="10">账号管理</Menu.Item>
         </SubMenu>
       </Menu>
