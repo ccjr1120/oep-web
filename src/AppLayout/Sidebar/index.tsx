@@ -1,14 +1,21 @@
 import { Menu } from "antd";
-import {
-  AppstoreOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import routes, { IRoute } from "../../router/index";
 
-const { SubMenu } = Menu;
+
+const loopMenu = (routes: Array<IRoute>) => {
+  return routes.map((route, i) => {
+    let firstStyle = i === 0 ? { marginTop: 0 } : {};
+    if (route) {
+      return (
+        <Menu.Item style={firstStyle} key={i}>
+          <Link to={`${route.path}`}>{route.name}</Link>
+        </Menu.Item>
+      );
+    }
+    return "";
+  });
+};
 
 const MySidebar = () => {
   return (
@@ -23,27 +30,7 @@ const MySidebar = () => {
         theme="dark"
         style={{ height: "calc(100% - 64px)" }}
       >
-        <Menu.Item style={{ marginTop: 0 }} key="1" icon={<PieChartOutlined />}>
-          Option 1
-        </Menu.Item>
-        <Menu.Item key="2" icon={<DesktopOutlined />}>
-          Option 2
-        </Menu.Item>
-        <Menu.Item key="3" icon={<ContainerOutlined />}>
-          Option 3
-        </Menu.Item>
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-          <Menu.Item key="5">Option 5</Menu.Item>
-          <Menu.Item key="6">Option 6</Menu.Item>
-          <Menu.Item key="7">Option 7</Menu.Item>
-          <Menu.Item key="8">Option 8</Menu.Item>
-        </SubMenu>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="系统管理">
-          <Menu.Item key="9">
-            <Link to="/menuManage"> 菜单管理</Link>
-          </Menu.Item>
-          <Menu.Item key="10">账号管理</Menu.Item>
-        </SubMenu>
+        {loopMenu(routes)}
       </Menu>
     </div>
   );

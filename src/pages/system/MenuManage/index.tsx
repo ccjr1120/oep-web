@@ -1,39 +1,66 @@
-import { Table } from "antd";
+import { Button, Card, Table } from "antd";
 
-const dataSource = [
+interface RecordType {
+  name: String;
+  path: String;
+  role: Array<String> | undefined;
+}
+
+const dataSource: Array<RecordType> = [
   {
-    key: "1",
-    name: "胡彦斌",
-    age: 32,
-    address: "西湖区湖底公园1号",
+    name: "菜单管理",
+    path: "/menuManage",
+    role: [],
   },
   {
-    key: "2",
-    name: "胡彦祖",
-    age: 42,
-    address: "西湖区湖底公园1号",
+    name: "菜单管理",
+    path: "/menuManage",
+    role: [],
   },
 ];
 
 const columns = [
   {
-    title: "姓名",
+    title: "名称",
     dataIndex: "name",
     key: "name",
   },
   {
-    title: "年龄",
-    dataIndex: "age",
-    key: "age",
+    title: "路径",
+    dataIndex: "path",
+    key: "path",
   },
   {
-    title: "住址",
-    dataIndex: "address",
-    key: "address",
+    title: "权限",
+    dataIndex: "role",
+    key: "role",
+  },
+  {
+    title: "操作",
+    key: "option",
+    dataIndex: "role",
+    width: 140,
+    fixed: "right" as "right",
+    render: (_: String, record: RecordType) => (
+      <div>
+        <Button type="text" size="small">
+          编辑
+        </Button>
+        <Button type="text" size="small">
+          删除
+        </Button>
+      </div>
+    ),
   },
 ];
 const MenuManage = () => {
-  return <Table dataSource={dataSource} columns={columns} />;
+  return (
+    <div className="page-container">
+      <Card>
+        <Table bordered dataSource={dataSource} columns={columns} />
+      </Card>
+    </div>
+  );
 };
 
 export default MenuManage;

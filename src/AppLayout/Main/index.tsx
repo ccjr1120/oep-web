@@ -3,7 +3,7 @@ import MenuManage from "../../pages/system/MenuManage";
 
 const Main = () => {
   return (
-    <div>
+    <div className="page-container">
       <Switch>
         <Route path={`/menuManage`} exact component={MenuManage}></Route>
       </Switch>
