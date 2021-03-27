@@ -2,6 +2,7 @@ import { Menu } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { Link } from "react-router-dom";
 export interface MenuType {
+  key: String;
   path?: String;
   name: String;
   children?: Array<MenuType>;
@@ -9,13 +10,46 @@ export interface MenuType {
 
 const menuList: Array<MenuType> = [
   {
-    name: "系统设置",
+    key: "a",
+    name: "首页",
+    path: "/overview",
+  },
+  {
+    key: "b",
+    name: "题库管理",
+    path: "/questionBank",
+  },
+  {
+    key: "c",
+    name: "考试管理",
+    path: "/questionBank",
+  },
+  {
+    key: "d",
+    name: "我的考试",
+    path: "/questionBank",
+  },
+  {
+    key: "e",
+    name: "学生信息",
+    path: "/questionBank",
+  },
+  {
+    key: "f",
+    name: "个人信息",
+    path: "/questionBank",
+  },
+  {
+    key: "z",
+    name: "系统管理",
     children: [
       {
+        key: "z1",
         path: "/menuManage",
         name: "菜单管理",
       },
       {
+        key: "z2",
         path: "/accountManage",
         name: "账号管理",
       },
@@ -29,13 +63,13 @@ const loopMenu = (menuList: Array<MenuType>) => {
     if (menu) {
       if (menu.children) {
         return (
-          <SubMenu key={i} title={menu.name}>
+          <SubMenu key={`${menu.key}`} title={menu.name}>
             {loopMenu(menu.children)}
           </SubMenu>
         );
       }
       return (
-        <Menu.Item style={firstStyle} key={i}>
+        <Menu.Item style={firstStyle} key={`${menu.key}`}>
           <Link to={`${menu.path}`}>{menu.name}</Link>
         </Menu.Item>
       );
