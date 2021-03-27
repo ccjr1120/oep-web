@@ -22,22 +22,22 @@ const menuList: Array<MenuType> = [
   {
     key: "c",
     name: "考试管理",
-    path: "/questionBank",
+    path: "/examManage",
   },
   {
     key: "d",
     name: "我的考试",
-    path: "/questionBank",
+    path: "/myExam",
   },
   {
     key: "e",
     name: "学生信息",
-    path: "/questionBank",
+    path: "/studentInfo",
   },
   {
     key: "f",
     name: "个人信息",
-    path: "/questionBank",
+    path: "/personalInfo",
   },
   {
     key: "z",
@@ -84,13 +84,7 @@ const MySidebar = () => {
       <div style={{ height: "64px", textAlign: "center", lineHeight: "64px" }}>
         <span style={{ color: "#fff", fontSize: "20px" }}>在线考试系统</span>
       </div>
-      <Menu
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
-        mode="inline"
-        theme="dark"
-        style={{ height: "calc(100% - 64px)" }}
-      >
+      <Menu mode="inline" theme="dark" style={{ height: "calc(100% - 64px)" }}>
         {loopMenu(menuList)}
       </Menu>
     </div>

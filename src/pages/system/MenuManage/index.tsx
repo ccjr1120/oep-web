@@ -1,6 +1,7 @@
 import { Button, Card, Table } from "antd";
 
 interface RecordType {
+  id: String;
   name: String;
   path: String;
   role: Array<String> | undefined;
@@ -8,11 +9,13 @@ interface RecordType {
 
 const dataSource: Array<RecordType> = [
   {
+    id: "1",
     name: "菜单管理",
     path: "/menuManage",
     role: [],
   },
   {
+    id: "2",
     name: "菜单管理",
     path: "/menuManage",
     role: [],
@@ -57,7 +60,7 @@ const MenuManage = () => {
   return (
     <div className="page-container">
       <Card>
-        <Table bordered dataSource={dataSource} columns={columns} />
+        <Table rowKey="id" bordered dataSource={dataSource} columns={columns} />
       </Card>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Button, Card, Table } from "antd";
 
 interface RecordType {
+  id: String;
   name: String;
   account: String;
   roleName: String;
@@ -8,11 +9,13 @@ interface RecordType {
 
 const dataSource: Array<RecordType> = [
   {
+    id: "1",
     name: "a",
     account: "123",
     roleName: "bv",
   },
   {
+    id: "2",
     name: "b",
     account: "323",
     roleName: "abv",
@@ -57,7 +60,7 @@ const accountManage = () => {
   return (
     <div className="page-container">
       <Card>
-        <Table bordered dataSource={dataSource} columns={columns} />
+        <Table rowKey="id" bordered dataSource={dataSource} columns={columns} />
       </Card>
     </div>
   );
