@@ -1,15 +1,42 @@
 import { Menu } from "antd";
+import SubMenu from "antd/lib/menu/SubMenu";
 import { Link } from "react-router-dom";
-import routes, { IRoute } from "../../router/index";
+export interface MenuType {
+  path?: String;
+  name: String;
+  children?: Array<MenuType>;
+}
 
+const menuList: Array<MenuType> = [
+  {
+    name: "系统设置",
+    children: [
+      {
+        path: "/menuManage",
+        name: "菜单管理",
+      },
+      {
+        path: "/accountManage",
+        name: "账号管理",
+      },
+    ],
+  },
+];
 
-const loopMenu = (routes: Array<IRoute>) => {
-  return routes.map((route, i) => {
+const loopMenu = (menuList: Array<MenuType>) => {
+  return menuList.map((menu, i) => {
     let firstStyle = i === 0 ? { marginTop: 0 } : {};
-    if (route) {
+    if (menu) {
+      if (menu.children) {
+        return (
+          <SubMenu key={i} title={menu.name}>
+            {loopMenu(menu.children)}
+          </SubMenu>
+        );
+      }
       return (
         <Menu.Item style={firstStyle} key={i}>
-          <Link to={`${route.path}`}>{route.name}</Link>
+          <Link to={`${menu.path}`}>{menu.name}</Link>
         </Menu.Item>
       );
     }
@@ -30,7 +57,7 @@ const MySidebar = () => {
         theme="dark"
         style={{ height: "calc(100% - 64px)" }}
       >
-        {loopMenu(routes)}
+        {loopMenu(menuList)}
       </Menu>
     </div>
   );
