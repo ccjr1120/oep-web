@@ -1,13 +1,20 @@
 import { Route, Switch } from "react-router";
-import accountManage from "../../pages/system/AccountManage";
-import MenuManage from "../../pages/system/MenuManage";
+import routes from "../../router/index";
 
 const Main = () => {
   return (
     <div className="page-container">
       <Switch>
-        <Route path={`/menuManage`} exact component={MenuManage}></Route>
-        <Route path={`/accountManage`} exact component={accountManage}></Route>
+        {routes.map((item, i) => {
+          return (
+            <Route
+              key={i}
+              path={`${item.path}`}
+              component={item.component}
+              exact
+            ></Route>
+          );
+        })}
       </Switch>
     </div>
   );

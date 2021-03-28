@@ -1,20 +1,22 @@
-import { FunctionComponent, lazy, LazyExoticComponent } from "react";
+import { FunctionComponent } from "react";
+import AccountManage from "../pages/system/AccountManage";
+import MenuManage from "../pages/system/MenuManage";
 
 export interface IRoute {
   path: String;
-  component: LazyExoticComponent<FunctionComponent>;
+  component: FunctionComponent;
   name: String;
 }
 
 const routes: Array<IRoute> = [
   {
     path: "/menuManage",
-    component: lazy(() => import("../pages/system/MenuManage/index")),
+    component: MenuManage,
     name: "菜单管理",
   },
   {
     path: "/accountManage",
-    component: lazy(() => import("../pages/system/AccountManage/index")),
+    component: AccountManage,
     name: "账号管理",
   },
 ];

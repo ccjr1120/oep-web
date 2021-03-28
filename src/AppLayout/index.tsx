@@ -8,7 +8,7 @@ import { CSSProperties, useState } from "react";
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = () => {
-  const [horizonPosition, setHorizonPosition] = useState({ right: "100%" });
+  const [horizonPosition] = useState({ right: "100%" });
   const loadStyle: CSSProperties = {
     height: "1px",
     position: "fixed",

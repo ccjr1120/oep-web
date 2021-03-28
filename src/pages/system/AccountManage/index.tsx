@@ -56,7 +56,7 @@ const columns = [
     ),
   },
 ];
-const accountManage = () => {
+const AccountManage = () => {
   return (
     <div className="page-container">
       <Card>
@@ -66,4 +66,4 @@ const accountManage = () => {
   );
 };
 
-export default accountManage;
+export default AccountManage;
