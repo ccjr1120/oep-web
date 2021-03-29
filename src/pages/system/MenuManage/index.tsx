@@ -1,6 +1,9 @@
-import { Button, Card, Col, Row, Table, Input } from "antd";
-import { useRef, useState } from "react";
+import { Button, Card, Col, Row, Input } from "antd";
+import React, { useRef, useState } from "react";
+import AutoTable, { AutoTableRefType } from "../../../components/AutoTable";
 import AddOrUpdate, { ChildRef } from "./AddOrUpdate";
+import { fetchMenuList } from "../../../api/system/menuManage";
+
 const { Search } = Input;
 
 interface RecordType {
@@ -11,65 +14,10 @@ interface RecordType {
   children?: Array<RecordType>;
 }
 
-const dataSource: Array<RecordType> = [
-  {
-    id: "01",
-    name: "菜单管理",
-    path: "/menuManage",
-    role: [],
-    children: [
-      {
-        id: "1",
-        name: "菜单管理",
-        path: "/menuManage",
-        role: [],
-        children: [
-          {
-            id: "11",
-            name: "菜单管理",
-            path: "/menuManage",
-            role: [],
-          },
-          {
-            id: "12",
-            name: "菜单管理",
-            path: "/menuManage",
-            role: [],
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "菜单管理",
-        path: "/menuManage",
-        role: [],
-        children: [
-          {
-            id: "21",
-            name: "菜单管理",
-            path: "/menuManage",
-            role: [],
-          },
-          {
-            id: "22",
-            name: "菜单管理",
-            path: "/menuManage",
-            role: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "3",
-    name: "菜单管理",
-    path: "/menuManage",
-    role: [],
-  },
-];
-
 const MenuManage = () => {
   const dialogRef = useRef<ChildRef>(null);
+  const autoTableRef = React.createRef<AutoTableRefType>();
+
   /**
    * 添加菜单，添加子菜单，编辑(0,1,2)
    */
@@ -80,6 +28,18 @@ const MenuManage = () => {
       setActiveMenu(record);
       setAction(action);
       dialogRef.current.showModal();
+    }
+  };
+
+  const [condition, setCondition] = useState({});
+  const onSearch = (value: string) => {
+    if (value) {
+      setCondition({ queryStr: value });
+    } else {
+      setCondition({});
+    }
+    if (autoTableRef.current) {
+      autoTableRef.current.fetch();
     }
   };
 
@@ -146,7 +106,11 @@ const MenuManage = () => {
       <Card>
         <Row>
           <Col span={12}>
-            <Search placeholder="根据名称路径模糊搜索" enterButton />
+            <Search
+              placeholder="根据名称路径模糊搜索"
+              onSearch={onSearch}
+              enterButton
+            />
           </Col>
           <Col span={12}>
             <div style={{ margin: "0 0 10px 10px" }}>
@@ -161,12 +125,11 @@ const MenuManage = () => {
             </div>
           </Col>
         </Row>
-        <Table
-          rowKey="id"
-          bordered
-          dataSource={dataSource}
+        <AutoTable
+          onRef={autoTableRef}
+          reqFun={fetchMenuList}
+          condition={condition}
           columns={columns}
-          size="middle"
         />
       </Card>
       <AddOrUpdate action={action} activeMenu={activeMenu} ref={dialogRef} />
