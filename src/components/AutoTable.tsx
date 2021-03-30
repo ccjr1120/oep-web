@@ -35,7 +35,7 @@ const AutoTable = ({ onRef, reqFun, condition, columns }: PropsType) => {
   useEffect(() => {
     fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [condition]);
   const handleTableChange = (pagination: any) => {
     let { current, pageSize } = pagination;
     fetch({

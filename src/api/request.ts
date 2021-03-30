@@ -11,9 +11,7 @@ axios.interceptors.response.use(
     return res.data.data;
   },
   (err) => {
-    if (err === "Error: Network Error") {
-      message.error("服务器无响应，请检查网络或服务器是否可用！");
-    }
+    message.error("服务器无响应，请检查网络或服务器是否可用！");
   }
 );
 
