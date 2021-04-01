@@ -1,12 +1,14 @@
-import { Button, Card, Col, Row, Input } from "antd";
+import { Button, Card, Col, Row, Input, message, Tag } from "antd";
 import React, { useRef, useState } from "react";
 import AutoTable, { AutoTableRefType } from "../../../components/AutoTable";
 import AddOrUpdate, { ChildRef } from "./AddOrUpdate";
 import { fetchMenuList } from "../../../api/system/menuManage";
+import confirm from "antd/lib/modal/confirm";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { fetchByBody } from "../../../api/api";
+import { roleList } from "../../../constant";
 
 const { Search } = Input;
-
-
 
 const MenuManage = () => {
   const dialogRef = useRef<ChildRef>(null);
@@ -17,7 +19,15 @@ const MenuManage = () => {
    */
   const [action, setAction] = useState(0);
   const [activeMenu, setActiveMenu] = useState<MenuType.RecordType>();
-  const showModal = (action: number, record: MenuType.RecordType | undefined) => {
+  const refreshTable = () => {
+    if (autoTableRef.current) {
+      autoTableRef.current.fetch();
+    }
+  };
+  const showModal = (
+    action: number,
+    record: MenuType.RecordType | undefined
+  ) => {
     if (dialogRef.current) {
       setActiveMenu(record);
       setAction(action);
@@ -32,19 +42,18 @@ const MenuManage = () => {
     } else {
       setCondition({});
     }
-    if (autoTableRef.current) {
-      autoTableRef.current.fetch();
-    }
   };
 
   const columns = [
     {
       title: "名称",
+      width: 160,
       dataIndex: "name",
       key: "name",
     },
     {
       title: "路径",
+      width: 160,
       dataIndex: "path",
       key: "path",
     },
@@ -52,6 +61,17 @@ const MenuManage = () => {
       title: "权限",
       dataIndex: "role",
       key: "role",
+      render: (_: String, record: MenuType.RecordType) => (
+        <div>
+          {JSON.parse(record.roles).map((item: number) => {
+            return (
+              <Tag key={item} color="cyan">
+                {roleList[item]}
+              </Tag>
+            );
+          })}
+        </div>
+      ),
     },
     {
       title: "操作",
@@ -83,7 +103,20 @@ const MenuManage = () => {
           </Button>
           <Button
             onClick={() => {
-              showModal(2, record);
+              confirm({
+                title: "确定要删除该菜单吗？",
+                icon: <ExclamationCircleOutlined />,
+                okText: "确认",
+                okType: "danger",
+                cancelText: "取消",
+                onOk() {
+                  fetchByBody("/admin/menu/del", record).then(() => {
+                    message.success("删除成功");
+                    refreshTable();
+                  });
+                },
+                onCancel() {},
+              });
             }}
             type="text"
             style={{ color: "red" }}
@@ -126,7 +159,12 @@ const MenuManage = () => {
           columns={columns}
         />
       </Card>
-      <AddOrUpdate action={action} activeMenu={activeMenu} ref={dialogRef} />
+      <AddOrUpdate
+        onHandle={refreshTable}
+        action={action}
+        activeMenu={activeMenu}
+        ref={dialogRef}
+      />
     </div>
   );
 };

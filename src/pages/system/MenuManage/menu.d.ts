@@ -4,7 +4,7 @@ declare namespace MenuType {
     id: string;
     name: string;
     path: string;
-    role: array<string> | undefined;
+    roles: array<string> | undefined;
     children?: array<RecordType>;
   }
 }

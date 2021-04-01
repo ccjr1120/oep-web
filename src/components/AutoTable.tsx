@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import { useImperativeHandle, useState } from "react";
+import { memo, useEffect, useImperativeHandle, useState } from "react";
 
 export interface AutoTableRefType {
   fetch: Function;
@@ -12,7 +12,7 @@ interface PropsType {
   condition: {};
 }
 
-const AutoTable = ({ onRef, reqFun, condition, columns }: PropsType) => {
+const AutoTable = memo(({ onRef, reqFun, condition, columns }: PropsType) => {
   useImperativeHandle(onRef, () => ({
     fetch,
   }));
@@ -32,10 +32,10 @@ const AutoTable = ({ onRef, reqFun, condition, columns }: PropsType) => {
       }
     });
   };
-  // useEffect(() => {
-  //   fetch();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [condition]);
+  useEffect(() => {
+    fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [condition]);
   const handleTableChange = (pagination: any) => {
     let { current, pageSize } = pagination;
     fetch({
@@ -55,6 +55,6 @@ const AutoTable = ({ onRef, reqFun, condition, columns }: PropsType) => {
       size="middle"
     />
   );
-};
+});
 
 export default AutoTable;
