@@ -87,6 +87,12 @@ const AddOrUpdate = memo(
                 activeMenu
               );
               formData.roles = JSON.parse(formData.roles);
+              formData.roles = formData.roles.map((item: any) => {
+                if (!isNaN(item)) {
+                  item = parseInt(item);
+                }
+                return item;
+              });
               menuForm.setFieldsValue(formData);
             }
           }
