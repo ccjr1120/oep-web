@@ -6,13 +6,7 @@ import { fetchMenuList } from "../../../api/system/menuManage";
 
 const { Search } = Input;
 
-interface RecordType {
-  id: String;
-  name: String;
-  path: String;
-  role: Array<String> | undefined;
-  children?: Array<RecordType>;
-}
+
 
 const MenuManage = () => {
   const dialogRef = useRef<ChildRef>(null);
@@ -22,8 +16,8 @@ const MenuManage = () => {
    * 添加菜单，添加子菜单，编辑(0,1,2)
    */
   const [action, setAction] = useState(0);
-  const [activeMenu, setActiveMenu] = useState<RecordType>();
-  const showModal = (action: number, record: RecordType | undefined) => {
+  const [activeMenu, setActiveMenu] = useState<MenuType.RecordType>();
+  const showModal = (action: number, record: MenuType.RecordType | undefined) => {
     if (dialogRef.current) {
       setActiveMenu(record);
       setAction(action);
@@ -65,7 +59,7 @@ const MenuManage = () => {
       dataIndex: "role",
       width: 200,
       fixed: "right" as "right",
-      render: (_: String, record: RecordType) => (
+      render: (_: String, record: MenuType.RecordType) => (
         <div>
           <Button
             onClick={() => {

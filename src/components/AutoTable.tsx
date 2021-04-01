@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import { useEffect, useImperativeHandle, useState } from "react";
+import { useImperativeHandle, useState } from "react";
 
 export interface AutoTableRefType {
   fetch: Function;
@@ -32,10 +32,10 @@ const AutoTable = ({ onRef, reqFun, condition, columns }: PropsType) => {
       }
     });
   };
-  useEffect(() => {
-    fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [condition]);
+  // useEffect(() => {
+  //   fetch();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [condition]);
   const handleTableChange = (pagination: any) => {
     let { current, pageSize } = pagination;
     fetch({

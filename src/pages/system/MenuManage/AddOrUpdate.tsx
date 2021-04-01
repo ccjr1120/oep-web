@@ -7,6 +7,11 @@ export interface ChildRef {
   showModal: Function;
 }
 
+const layout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 },
+};
+
 const AddOrUpdate = forwardRef<ChildRef, any>(({ action, activeMenu }, ref) => {
   useImperativeHandle(ref, () => ({
     showModal,
@@ -18,44 +23,37 @@ const AddOrUpdate = forwardRef<ChildRef, any>(({ action, activeMenu }, ref) => {
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    menuForm
+      .validateFields()
+      .then((value) => {
+        console.log(value);
+      })
+      .catch(() => {});
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
-  };
+  const [menuForm] = Form.useForm();
   return (
     <Modal
       title={["添加菜单", "添加子菜单", "编辑菜单"][action]}
       visible={isModalVisible}
+      destroyOnClose
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <Form {...layout} name="basic" initialValues={{ remember: true }}>
+      <Form {...layout} form={menuForm} preserve={false}>
         <Form.Item
           label="父级菜单"
           name="parent"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          initialValue="/"
+          rules={[{ required: true, message: "父级菜单不能为空" }]}
         >
-          <Select
-            mode="multiple"
-            disabled
-            showArrow
-            style={{ width: "100%" }}
-            placeholder="请选择父级菜单"
-          >
-            {["管理员", "教师", "学生"].map((item, i) => {
-              return (
-                <Option key={i} value={item}>
-                  {item}
-                </Option>
-              );
-            })}
+          <Select placeholder="选择父级菜单" optionFilterProp="children">
+            <Option value="/">Root</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="tom">Tom</Option>
           </Select>
         </Form.Item>
 
@@ -87,7 +85,7 @@ const AddOrUpdate = forwardRef<ChildRef, any>(({ action, activeMenu }, ref) => {
           >
             {["管理员", "教师", "学生"].map((item, i) => {
               return (
-                <Option key={i} value={item}>
+                <Option key={i} value={i}>
                   {item}
                 </Option>
               );
