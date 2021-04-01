@@ -10,7 +10,7 @@ export interface AppRouteType {
  * 尝试继承Route，从而实现路由的开始与结束方法
  */
 export class AppRoute extends Route<any> {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.beforeEffact();
   }
   componentDidMount() {
