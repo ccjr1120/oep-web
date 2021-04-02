@@ -78,9 +78,8 @@ const AddOrUpdate = memo(
       if (isModalVisible) {
         fetchByBody("/admin/menu/listFirstMenu").then((resp: any) => {
           setFirstMenuList(resp);
-          if (action === 1 && activeMenu?.id) {
-            setInitVal(activeMenu.id);
-          } else if (action === 2) {
+          menuForm.setFieldsValue({parentId:activeMenu?.id||'/'})
+          if (action === 2) {
             if (activeMenu) {
               const formData: MenuType.RecordType = Object.assign(
                 {},
@@ -99,7 +98,6 @@ const AddOrUpdate = memo(
         });
       }
     }, [isModalVisible, activeMenu, action, menuForm]);
-    const [initVal, setInitVal] = useState("/");
     return (
       <Modal
         title={["添加菜单", "添加子菜单", "编辑菜单"][action]}
@@ -112,7 +110,6 @@ const AddOrUpdate = memo(
           <Form.Item
             label="父级菜单"
             name="parentId"
-            initialValue={initVal}
             rules={[{ required: true, message: "父级菜单不能为空" }]}
           >
             <Select placeholder="选择父级菜单" optionFilterProp="children">

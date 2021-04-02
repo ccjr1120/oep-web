@@ -17,7 +17,7 @@ const Main = () => {
   };
 
   return (
-    <div className="page-container">
+    <div style={{ overflow: "auto" }} className="page-container">
       <Progress
         showInfo={false}
         style={loadStyle}

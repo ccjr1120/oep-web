@@ -18,8 +18,8 @@ const AutoTable = memo(({ onRef, reqFun, condition, columns }: PropsType) => {
   }));
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-  const fetch = (params = { current: 1, pageSize: 10 }) => {
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
+  const fetch = (params = { current: 1, pageSize: 8 }) => {
     let values = { ...params, ...condition };
     setLoading(true);
     reqFun(values).then((data: any) => {
@@ -27,6 +27,7 @@ const AutoTable = memo(({ onRef, reqFun, condition, columns }: PropsType) => {
         setLoading(false);
         setData(data.records);
         setPagination({
+          pageSize: data.size,
           ...data,
         });
       }

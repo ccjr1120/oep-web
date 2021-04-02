@@ -65,7 +65,7 @@ const AddOrUpdate = memo(
           userForm.setFieldsValue(activeRecord);
         }
       }
-    }, [isModalVisible, activeRecord]);
+    }, [isModalVisible, userForm, activeRecord]);
     return (
       <Modal
         title={["添加账号", "编辑账号"][action]}

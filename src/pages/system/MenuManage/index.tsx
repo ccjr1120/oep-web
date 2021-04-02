@@ -80,16 +80,18 @@ const MenuManage = () => {
       fixed: "right" as "right",
       render: (_: String, record: MenuType.RecordType) => (
         <div>
-          <Button
-            onClick={() => {
-              showModal(1, record);
-            }}
-            type="text"
-            style={{ color: "#1890ff" }}
-            size="small"
-          >
-            添加子菜单
-          </Button>
+          {record.parentId !== '/'?'':
+            <Button
+              onClick={() => {
+                showModal(1, record);
+              }}
+              type="text"
+              style={{ color: "#1890ff" }}
+              size="small"
+            >
+              添加子菜单
+            </Button>
+          }
           <Button
             onClick={() => {
               showModal(2, record);
