@@ -13,7 +13,6 @@ const { Search } = Input;
 const MenuManage = () => {
   const dialogRef = useRef<ChildRef>(null);
   const autoTableRef = React.createRef<AutoTableRefType>();
-
   /**
    * 添加菜单，添加子菜单，编辑(0,1,2)
    */
