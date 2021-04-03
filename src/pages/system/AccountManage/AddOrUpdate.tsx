@@ -36,13 +36,13 @@ const AddOrUpdate = memo(
         .validateFields()
         .then((value) => {
           if (action === 0) {
-            fetchByBody("/admin/user/add", value).then(() => {
+            fetchByBody("/admin/account/add", value).then(() => {
               message.success("添加成功");
               setIsModalVisible(false);
               onHandle();
             });
           } else {
-            fetchByBody("/admin/user/update", {
+            fetchByBody("/admin/account/update", {
               id: activeRecord?.id,
               ...value,
             }).then(() => {

@@ -16,7 +16,7 @@ const refreshTable = () => {
   }
 };
 const fetch = (data: any) => {
-  return fetchByBody("/admin/user/list", data);
+  return fetchByBody("/admin/account/list", data);
 };
 const AccountManage = () => {
   const columns = [
@@ -81,7 +81,7 @@ const AccountManage = () => {
                 okType: "danger",
                 cancelText: "取消",
                 onOk() {
-                  fetchByBody("/admin/user/del", record).then(() => {
+                  fetchByBody("/admin/account/del", record).then(() => {
                     message.success("删除成功");
                     refreshTable();
                   });
