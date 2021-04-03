@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import questionBank from "../pages/questionBank";
 import AccountManage from "../pages/system/AccountManage";
 import MenuManage from "../pages/system/MenuManage";
 
@@ -9,6 +10,11 @@ export interface IRoute {
 }
 
 const routes: Array<IRoute> = [
+  {
+    path: "/questionBank",
+    component: questionBank,
+    name: "题库管理",
+  },
   {
     path: "/menuManage",
     component: MenuManage,
