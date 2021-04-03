@@ -1,8 +1,10 @@
-import { Card, Col, List, Row } from "antd";
+import { Button, Card, Col, List, Row } from "antd";
 import Search from "antd/lib/input/Search";
 import BankCard from "./BankCard";
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
 
-const questionBank = () => {
+const QuestionBank = ({ history }: any) => {
   const data: Array<BankType.ItemType> = [
     {
       id: "1232",
@@ -41,9 +43,25 @@ const questionBank = () => {
   return (
     <div>
       <Row style={{ margin: "6px 10px 0 10px", background: "#fff" }}>
-        <Col span={12}>
-          <Search placeholder="根据名称路径模糊搜索" enterButton />
+        <Col>
+          <RangePicker />
         </Col>
+        <Col span={6}>
+          <Search
+            style={{ marginLeft: "10px" }}
+            placeholder="根据名称搜索"
+            enterButton
+          />
+        </Col>
+        <Button
+          style={{ marginLeft: "40px" }}
+          onClick={() => {
+            history.push({ pathname: "/editBank", params: { id: "123" } });
+          }}
+          type="primary"
+        >
+          + 添加题库
+        </Button>
       </Row>
       <Card style={{ margin: "0 10px" }}>
         <List
@@ -68,4 +86,4 @@ const questionBank = () => {
   );
 };
 
-export default questionBank;
+export default QuestionBank;

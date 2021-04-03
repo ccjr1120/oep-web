@@ -14,7 +14,7 @@ const BankCard = memo(({ item }: PropsType) => {
         hoverable
         extra={
           <Button type="text" size="small" style={{ color: "#1890ff" }}>
-            More
+            详情
           </Button>
         }
       >
