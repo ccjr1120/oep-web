@@ -1,20 +1,22 @@
-.ant-progress-bg{
-    height: 4px !important;
+.ant-progress-bg {
+  height: 4px !important;
 }
-.ant-progress-outer{
-    display: block;
-    margin: 0;
-    padding: 0;
-
+.ant-progress-outer {
+  display: block;
+  margin: 0;
+  padding: 0;
 }
-.ant-progress{
-    line-height: 1px;
+.ant-progress {
+  line-height: 1px;
 }
-.header-load{
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    background: blue;
-    height: 3px;
-    width: 100%;
+.header-load {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  background: blue;
+  height: 3px;
+  width: 100%;
+}
+.ant-card {
+  height: auto !important;
 }
