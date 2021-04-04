@@ -1,39 +1,37 @@
 import { Form, Input, Card, Button, Col, Row, message } from "antd";
-import { FileExcelOutlined, CheckOutlined } from "@ant-design/icons";
+import {
+  FileExcelOutlined,
+  CheckOutlined,
+  RollbackOutlined,
+} from "@ant-design/icons";
 import "./edit.scss";
 import QuestionEdit from "./questionEdit";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import QuestionList from "./questionList";
 import { fetchByParam } from "../../../api/api";
+import { useForm } from "antd/lib/form/Form";
 
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
 
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
-};
 const modelRef = createRef<any>();
-const BankEdit = (props: any) => {
+const BankEdit = ({ history, location }: any) => {
   const addQuestion = () => {
-    if (!title) {
+    if (!bankName) {
       message.error("添加题目前，标题不能为空");
       return;
     }
     modelRef.current?.showModal();
   };
-  const [title, setTitle] = useState<string>();
+  const [bankName, setBankName] = useState<string>();
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [time, setTime] = useState<any>();
   const [bankId, setBankId] = useState<string>();
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const bankName = e.target.value;
-    setTitle(bankName);
+    setBankName(bankName);
     setSaveLoading(true);
     if (time) {
       clearTimeout(time);
@@ -67,9 +65,27 @@ const BankEdit = (props: any) => {
       }, 2000)
     );
   };
+  const [form] = useForm();
+  useEffect(() => {
+    if (location.state.item) {
+      const item = location.state.item;
+      setBankId(item.id);
+      form.setFieldsValue({ name: item.bankName });
+    }
+  }, [location, bankId, form]);
+
   return (
     <div style={{ height: "100%", display: "flex", justifyContent: "center" }}>
       <Card style={{ flex: 1 }}>
+        <Button
+          style={{ float: "left" }}
+          icon={<RollbackOutlined />}
+          size="large"
+          type="text"
+          onClick={() => {
+            history.go(-1);
+          }}
+        ></Button>
         <h2
           style={{
             textAlign: "center",
@@ -77,15 +93,9 @@ const BankEdit = (props: any) => {
             marginBottom: "24px",
           }}
         >
-          添加题库
+          {location.state.item ? "题库详情" : "添加题库"}
         </h2>
-        <Form
-          {...layout}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          preserve={false}
-        >
+        <Form {...layout} form={form} preserve={false}>
           <Form.Item label="题库名" tooltip={"2s内没有输入都会进行保存"}>
             <Row>
               <Col span={20}>
@@ -96,7 +106,6 @@ const BankEdit = (props: any) => {
                   rules={[{ required: true, message: "题库名不能为空!" }]}
                 >
                   <Input
-                    value={title}
                     onChange={titleChange}
                     placeholder="请输入题库名"
                     allowClear

@@ -2,44 +2,22 @@ import { Button, Card, Col, List, Row } from "antd";
 import Search from "antd/lib/input/Search";
 import BankCard from "./BankCard";
 import { DatePicker } from "antd";
+import { useEffect, useState } from "react";
+import { fetchByBody } from "../../api/api";
 const { RangePicker } = DatePicker;
 
 const QuestionBank = ({ history }: any) => {
-  const data: Array<BankType.ItemType> = [
-    {
-      id: "1232",
-      title: "Title 1",
-      createTime: "2020-12-31",
-    },
-    {
-      id: "1232",
-      title: "Title 2",
-      createTime: "2020-12-31",
-    },
-    {
-      id: "1232",
-      title: "Title 3",
-      createTime: "2020-12-31",
-      updateTime: "2020-12-31",
-    },
-    {
-      id: "1232",
-      title: "Title 5",
-      createTime: "2020-12-31",
-    },
-    {
-      id: "1232",
-      title: "Title 4",
-      createTime: "2020-12-31",
-      updateTime: "2020-12-31",
-    },
-    {
-      id: "1232",
-      title: "Title 6",
-      createTime: "2020-12-31",
-    },
-  ];
-
+  const fetch = () => {
+    fetchByBody("/teacher/questionBank/list", {}).then((resp) => {
+      if (resp.data) {
+        setBankList(resp.data);
+      }
+    });
+  };
+  const [bankList, setBankList] = useState<Array<BankType.ItemType>>();
+  useEffect(() => {
+    fetch();
+  }, []);
   return (
     <div>
       <Row style={{ margin: "6px 10px 0 10px", background: "#fff" }}>
@@ -56,7 +34,7 @@ const QuestionBank = ({ history }: any) => {
         <Button
           style={{ marginLeft: "40px" }}
           onClick={() => {
-            history.push({ pathname: "/bankEdit", params: { id: "123" } });
+            history.push({ pathname: "/bankEdit/", state: {} });
           }}
           type="primary"
         >
@@ -73,10 +51,10 @@ const QuestionBank = ({ history }: any) => {
             lg: 3,
             xl: 3,
           }}
-          dataSource={data}
+          dataSource={bankList}
           renderItem={(item) => (
             <List.Item>
-              <BankCard item={item} />
+              <BankCard item={item} history={history} />
             </List.Item>
           )}
         />
