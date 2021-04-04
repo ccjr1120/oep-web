@@ -1,4 +1,4 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input, message, Select } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { memo, useEffect, useImperativeHandle, useState } from "react";
 const { Option } = Select;
@@ -21,7 +21,24 @@ const QuestionEdit = memo(
       form
         .validateFields()
         .then((value) => {
-          console.log(value);
+          let wrongAnswer = [];
+          let rightAnswer = [];
+          for (let i = 1; i <= 5; i++) {
+            const c = value[`c${i}`];
+            if (c) {
+              value[`t${i}`] === "1"
+                ? rightAnswer.push(c)
+                : wrongAnswer.push(c);
+            }
+          }
+          if (rightAnswer.length === 0) {
+            message.error("答案或正确答案不能全部为空");
+            return;
+          }
+          const rightJson = JSON.stringify(rightAnswer);
+          const wrongJson = JSON.stringify(wrongAnswer);
+          const data = { title: value.title, rightJson, wrongJson };
+          console.log(data);
           showModal();
         })
         .catch((error) => {});
@@ -38,6 +55,8 @@ const QuestionEdit = memo(
         width="600px"
         visible={visible}
         onOk={submit}
+        okText="确认"
+        cancelText="取消"
         onCancel={showModal}
         destroyOnClose
       >
@@ -58,7 +77,11 @@ const QuestionEdit = memo(
             <Input.Group compact>
               {[1, 2, 3, 4, 5].map((i) => {
                 return (
-                  <span className="answer-item" style={{ width: "100%"}} key={i}>
+                  <span
+                    className="answer-item"
+                    style={{ width: "100%" }}
+                    key={i}
+                  >
                     <Form.Item name={"t" + i} noStyle>
                       <Select style={{ width: "12%" }}>
                         <Option value="1">✔</Option>
