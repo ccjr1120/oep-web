@@ -5,6 +5,8 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import "./edit.scss";
+import QuestionEdit from "./questionEdit";
+import { createRef } from "react";
 const { TabPane } = Tabs;
 
 const layout = {
@@ -19,7 +21,8 @@ const onFinish = (values: any) => {
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
-const EditBank = (props: any) => {
+const modelRef = createRef<any>();
+const BankEdit = (props: any) => {
   return (
     <div style={{ height: "100%", display: "flex", justifyContent: "center" }}>
       <Card style={{ flex: 1 }}>
@@ -38,6 +41,7 @@ const EditBank = (props: any) => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          preserve={false}
         >
           <Form.Item label="题库名">
             <Row>
@@ -52,9 +56,6 @@ const EditBank = (props: any) => {
                 </Form.Item>
               </Col>
               <Col style={{ paddingTop: "10px" }} span={4}>
-                {/* <span style={{ fontSize: "12px", color: "blue" }}>
-                  下载Excel模板
-                </span> */}
                 <a style={{ fontSize: "12px" }} href="Excel导入模板.xlsx">
                   下载Excel模板
                 </a>
@@ -77,6 +78,7 @@ const EditBank = (props: any) => {
           type="primary"
           size="large"
           icon={<PlusOutlined />}
+          onClick={modelRef.current?.showModal}
         >
           添加
         </Button>
@@ -97,8 +99,9 @@ const EditBank = (props: any) => {
           保存
         </Button>
       </div>
+      <QuestionEdit onRef={modelRef} />
     </div>
   );
 };
 
-export default EditBank;
+export default BankEdit;

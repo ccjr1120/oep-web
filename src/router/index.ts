@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import QuestionBank from "../pages/questionBank";
-import EditBank from "../pages/questionBank/editBank";
+import BankEdit from "../pages/questionBank/edit/bankEdit";
 import AccountManage from "../pages/system/AccountManage";
 import MenuManage from "../pages/system/MenuManage";
 
@@ -17,8 +17,8 @@ const routes: Array<IRoute> = [
     name: "题库管理",
   },
   {
-    path: "/editBank",
-    component: EditBank,
+    path: "/bankEdit",
+    component: BankEdit,
     name: "题库编辑",
   },
   {

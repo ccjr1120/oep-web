@@ -56,7 +56,7 @@ const QuestionBank = ({ history }: any) => {
         <Button
           style={{ marginLeft: "40px" }}
           onClick={() => {
-            history.push({ pathname: "/editBank", params: { id: "123" } });
+            history.push({ pathname: "/bankEdit", params: { id: "123" } });
           }}
           type="primary"
         >

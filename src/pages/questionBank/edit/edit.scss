@@ -12,3 +12,7 @@
 .fixed-add {
   bottom: 160px;
 }
+
+.answer-item + .answer-item {
+  margin-top: 6px;
+}
