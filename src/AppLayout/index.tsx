@@ -8,7 +8,7 @@ const { Header, Sider, Content } = Layout;
 
 const AppLayout = () => {
   return (
-    <Layout style={{ width: "100%", height: "100%" }}>
+    <Layout style={{ width: "100%", minHeight: "100vh" }}>
       <Sider>
         <MySidebar />
       </Sider>
