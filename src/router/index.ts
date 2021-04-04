@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import QuestionBank from "../pages/questionBank";
-import BankEdit from "../pages/questionBank/edit/bankEdit";
+import BankEdit from "../pages/questionBank/edit";
 import AccountManage from "../pages/system/AccountManage";
 import MenuManage from "../pages/system/MenuManage";
 

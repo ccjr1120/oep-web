@@ -1,5 +1,5 @@
-import { List, Typography } from "antd";
-import { time } from "node:console";
+import { List } from "antd";
+import QuestionItem from "./questionItem";
 
 const data = [
   "Racing car sprays burning fuel into crowd.",
@@ -8,21 +8,20 @@ const data = [
   "Man charged over missing wedding girl.",
   "Los Angeles battles huge wildfires.",
 ];
-
-const QuestionItem = ({ question }: any) => {
+const QuestionList = ({ list }: any) => {
   return (
     <List
-      header={<div>{question.title}</div>}
-      footer={<div>{question.createTime}</div>}
+      header={<div>题目</div>}
+      style={{ height: "auto" }}
       bordered
       dataSource={data}
       renderItem={(item) => (
         <List.Item>
-          <Typography.Text mark>[ITEM]</Typography.Text> {item}
+          <QuestionItem question={item} />{" "}
         </List.Item>
       )}
     />
   );
 };
 
-export default QuestionItem;
+export default QuestionList;

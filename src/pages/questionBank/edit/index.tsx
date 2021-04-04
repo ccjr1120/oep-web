@@ -1,4 +1,4 @@
-import { Form, Input, Card, Tabs, Button, Col, Row } from "antd";
+import { Form, Input, Card, Button, Col, Row } from "antd";
 import {
   FileExcelOutlined,
   CheckOutlined,
@@ -7,7 +7,7 @@ import {
 import "./edit.scss";
 import QuestionEdit from "./questionEdit";
 import { createRef } from "react";
-const { TabPane } = Tabs;
+import QuestionList from "./questionList";
 
 const layout = {
   labelCol: { span: 4 },
@@ -62,38 +62,32 @@ const BankEdit = (props: any) => {
               </Col>
             </Row>
           </Form.Item>
-          <Form.Item>
-            <div>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="单选" key="1"></TabPane>
-                <TabPane tab="多选" key="2"></TabPane>
-              </Tabs>
-            </div>
-          </Form.Item>
+          <QuestionList />
         </Form>
       </Card>
-      <div className="fixed-btn fixed-add">
-        <Button
-          style={{ background: "#31a7f0" }}
-          type="primary"
-          size="large"
-          icon={<PlusOutlined />}
-          onClick={modelRef.current?.showModal}
-        >
-          添加
-        </Button>
+      <div>
+        <div className="fixed-btn fixed-add">
+          <Button
+            style={{ background: "#31a7f0" }}
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            onClick={modelRef.current?.showModal}
+          >
+            添加
+          </Button>
+        </div>
+        <div className="fixed-btn fixed-excel">
+          <Button
+            style={{ background: "green" }}
+            type="primary"
+            size="large"
+            icon={<FileExcelOutlined />}
+          >
+            导入
+          </Button>
+        </div>
       </div>
-      <div className="fixed-btn fixed-excel">
-        <Button
-          style={{ background: "green" }}
-          type="primary"
-          size="large"
-          icon={<FileExcelOutlined />}
-        >
-          导入
-        </Button>
-      </div>
-
       <div className="fixed-btn">
         <Button type="primary" size="large" icon={<CheckOutlined />}>
           保存
