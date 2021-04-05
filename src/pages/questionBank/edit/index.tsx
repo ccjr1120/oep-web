@@ -1,12 +1,7 @@
 import { Form, Input, Card, Button, Col, Row, message } from "antd";
-import {
-  FileExcelOutlined,
-  CheckOutlined,
-  RollbackOutlined,
-} from "@ant-design/icons";
+import { CheckOutlined, RollbackOutlined } from "@ant-design/icons";
 import "./edit.scss";
-import QuestionEdit from "./questionEdit";
-import { createRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import QuestionList from "./questionList";
 import { fetchByParam } from "../../../api/api";
 import { useForm } from "antd/lib/form/Form";
@@ -16,19 +11,14 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
-const modelRef = createRef<any>();
 const BankEdit = ({ history, location }: any) => {
-  const addQuestion = () => {
-    if (!bankName) {
-      message.error("添加题目前，标题不能为空");
-      return;
-    }
-    modelRef.current?.showModal();
-  };
-  const [bankName, setBankName] = useState<string>();
+  const [bankName, setBankName] = useState<string>(
+    location.state.item?.bankName
+  );
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [time, setTime] = useState<any>();
   const [bankId, setBankId] = useState<string>();
+  const [updateTime, setUpdateTime] = useState<string>();
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const bankName = e.target.value;
     setBankName(bankName);
@@ -46,6 +36,7 @@ const BankEdit = ({ history, location }: any) => {
           fetchByParam("/teacher/questionBank/update", { id: bankId, bankName })
             .then((resp) => {
               message.success("自动保存成功");
+              setUpdateTime(resp.data.updateTime);
               setSaveLoading(false);
             })
             .catch(() => {
@@ -55,7 +46,8 @@ const BankEdit = ({ history, location }: any) => {
           fetchByParam("/teacher/questionBank/add", { bankName })
             .then((resp) => {
               message.success("自动保存成功");
-              setBankId(resp.data);
+              setBankId(resp.data.id);
+              setUpdateTime(resp.data.updateTime);
               setSaveLoading(false);
             })
             .catch(() => {
@@ -70,6 +62,7 @@ const BankEdit = ({ history, location }: any) => {
     if (location.state.item) {
       const item = location.state.item;
       setBankId(item.id);
+      setUpdateTime(item.updateTime);
       form.setFieldsValue({ name: item.bankName });
     }
   }, [location, bankId, form]);
@@ -119,32 +112,25 @@ const BankEdit = ({ history, location }: any) => {
               </Col>
             </Row>
           </Form.Item>
-          <QuestionList addQuestion={addQuestion} bankId={bankId} />
+          <QuestionList
+            bankName={bankName}
+            updateTime={updateTime}
+            bankId={bankId}
+          />
         </Form>
       </Card>
       <div>
-        <div className="fixed-btn fixed-excel">
-          <Button
-            style={{ background: "green" }}
-            type="primary"
-            size="large"
-            icon={<FileExcelOutlined />}
-          >
-            导入
-          </Button>
-        </div>
         <div className="fixed-btn">
           <Button
             type="primary"
             loading={saveLoading}
-            size="large"
+            size="small"
             icon={<CheckOutlined />}
           >
             {saveLoading ? "自动保存中" : "保存"}
           </Button>
         </div>
       </div>
-      <QuestionEdit onRef={modelRef} />
     </div>
   );
 };

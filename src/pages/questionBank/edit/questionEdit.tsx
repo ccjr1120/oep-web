@@ -1,6 +1,7 @@
 import { Form, Input, message, Select } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { memo, useEffect, useImperativeHandle, useState } from "react";
+import { fetchByBody } from "../../../api/api";
 const { Option } = Select;
 
 const layout = {
@@ -9,7 +10,7 @@ const layout = {
 };
 
 const QuestionEdit = memo(
-  ({ onRef, action, activeRecord, onHandle }: any, ref) => {
+  ({ onRef, action, activeRecord, onHandle, bankId }: any, ref) => {
     useImperativeHandle(onRef, () => ({
       showModal,
     }));
@@ -37,9 +38,21 @@ const QuestionEdit = memo(
           }
           const rightJson = JSON.stringify(rightAnswer);
           const wrongJson = JSON.stringify(wrongAnswer);
-          const data = { title: value.title, rightJson, wrongJson };
-          console.log(data);
-          showModal();
+          const type = rightAnswer.length > 1 ? 2 : 1;
+          const data = {
+            bankId,
+            title: value.title,
+            rightAnswer: rightJson,
+            wrongAnswer: wrongJson,
+            type,
+          };
+          fetchByBody("/teacher/question/add", data)
+            .then((resp) => {
+              message.success("添加成功");
+              onHandle();
+              showModal();
+            })
+            .catch(() => {});
         })
         .catch((error) => {});
     };

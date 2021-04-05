@@ -1,48 +1,105 @@
-import { List, Button } from "antd";
+import { List, Button, message } from "antd";
+import { createRef, memo, useEffect, useState } from "react";
+import { fetchByParam } from "../../../api/api";
+import QuestionEdit from "./questionEdit";
 import QuestionItem from "./questionItem";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  FileExcelOutlined,
+} from "@ant-design/icons";
 
-const data = [
-  "Racing car sprays burning fuel into crowd.",
-  "Japanese princess to wed commoner.",
-  "Australian walks 100km after outback crash.",
-  "Man charged over missing wedding girl.",
-  "Los Angeles battles huge wildfires.",
-];
-const QuestionList = ({ list, addQuestion }: any) => {
-  return (
-    <List
-      header={
-        <div>
-          题目{" "}
-          <Button
-            style={{ color: "#31a7ff", marginLeft: "8px" }}
-            type="text"
-            size="small"
-            onClick={addQuestion}
-          >
-            + 添加新题目
-          </Button>
-          <span
-            style={{
-              float: "right",
-              fontSize: "12px",
-              color: "rgba(0,0,0,0.6)",
-            }}
-          >
-            最近一次修改:2021-12-32 12:23
-          </span>
-        </div>
+const modelRef = createRef<any>();
+const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
+  const addQuestion = () => {
+    if (!bankName) {
+      message.error("添加题目前，标题不能为空");
+      return;
+    }
+    modelRef.current?.showModal();
+  };
+  const [questionList, setQuestionList] = useState();
+  const fetch = () => {
+    fetchByParam("/teacher/question/list", { bankId: bankId || "" }).then(
+      (resp) => {
+        setQuestionList(resp.data);
       }
-      style={{ height: "auto" }}
-      bordered
-      dataSource={data}
-      renderItem={(item) => (
-        <List.Item>
-          <QuestionItem question={item} />{" "}
-        </List.Item>
-      )}
-    />
+    );
+  };
+  useEffect(() => {
+    fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bankId]);
+
+  return (
+    <>
+      <List
+        header={
+          <div>
+            题目
+            <Button
+              style={{ color: "#31a7ff", marginLeft: "8px" }}
+              type="text"
+              size="small"
+              onClick={addQuestion}
+            >
+              + 添加新题目
+            </Button>
+            <Button
+              style={{ color: "green" }}
+              type="link"
+              size="small"
+              icon={<FileExcelOutlined />}
+            >
+              Excel导入
+            </Button>
+            <span
+              style={{
+                float: "right",
+                fontSize: "12px",
+                color: "rgba(0,0,0,0.6)",
+              }}
+            >
+              最近一次修改:{updateTime}
+            </span>
+          </div>
+        }
+        style={{ minHeight: "40vh" }}
+        bordered
+        dataSource={questionList}
+        renderItem={(item) => (
+          <List.Item>
+            <div
+              style={{
+                width: "100%",
+                paddingRight: "20px",
+                position: "relative",
+              }}
+            >
+              <QuestionItem item={item} />
+              <div
+                style={{
+                  float: "right",
+                  position: "absolute",
+                  bottom: "0",
+                  right: "-20px",
+                }}
+              >
+                <Button icon={<DeleteOutlined />} danger></Button>
+                <br />
+                <Button
+                  icon={<EditOutlined />}
+                  type="ghost"
+                  style={{ marginTop: "8px", color: "#1890ff" }}
+                />
+              </div>
+            </div>
+          </List.Item>
+        )}
+      />
+      <QuestionEdit bankId={bankId} onRef={modelRef} onHandle={fetch} />
+    </>
   );
-};
+});
 
 export default QuestionList;
