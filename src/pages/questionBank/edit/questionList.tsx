@@ -7,11 +7,14 @@ import {
   EditOutlined,
   DeleteOutlined,
   FileExcelOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import confirm from "antd/lib/modal/confirm";
 
 const modelRef = createRef<any>();
 const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
   const addQuestion = () => {
+    setActiveItem(undefined);
     if (!bankName) {
       message.error("添加题目前，标题不能为空");
       return;
@@ -25,6 +28,27 @@ const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
         setQuestionList(resp.data);
       }
     );
+  };
+  const delItem = (id: String) => {
+    confirm({
+      title: "确定要删除该菜单吗？",
+      icon: <ExclamationCircleOutlined />,
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        fetchByParam("/teacher/question/del", { id }).then(() => {
+          message.success("删除成功");
+          fetch();
+        });
+      },
+      onCancel() {},
+    });
+  };
+  const [activeItem, setActiveItem] = useState();
+  const editItem = (item: any) => {
+    setActiveItem(item);
+    modelRef.current?.showModal();
   };
   useEffect(() => {
     fetch();
@@ -67,7 +91,7 @@ const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
         style={{ minHeight: "40vh" }}
         bordered
         dataSource={questionList}
-        renderItem={(item) => (
+        renderItem={(item: any) => (
           <List.Item>
             <div
               style={{
@@ -85,19 +109,33 @@ const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
                   right: "-20px",
                 }}
               >
-                <Button icon={<DeleteOutlined />} danger></Button>
+                <Button
+                  icon={<DeleteOutlined />}
+                  danger
+                  onClick={() => {
+                    delItem(item.id);
+                  }}
+                ></Button>
                 <br />
                 <Button
                   icon={<EditOutlined />}
                   type="ghost"
                   style={{ marginTop: "8px", color: "#1890ff" }}
+                  onClick={() => {
+                    editItem(item);
+                  }}
                 />
               </div>
             </div>
           </List.Item>
         )}
       />
-      <QuestionEdit bankId={bankId} onRef={modelRef} onHandle={fetch} />
+      <QuestionEdit
+        bankId={bankId}
+        onRef={modelRef}
+        onHandle={fetch}
+        activeItem={activeItem}
+      />
     </>
   );
 });

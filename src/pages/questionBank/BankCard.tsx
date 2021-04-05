@@ -1,5 +1,6 @@
 import { Button, Card, Empty } from "antd";
 import { memo } from "react";
+import CountTo from "react-count-to";
 
 interface PropsType {
   history: any;
@@ -33,25 +34,33 @@ const BankCard = memo(({ item, history }: PropsType) => {
               : "创建时间:" + item.createTime}
           </div>
           <div style={{ height: "220px", paddingTop: "20px" }}>
-            <Empty
-              image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-              imageStyle={{
-                height: 60,
-              }}
-              description={<span>当前题库没有题目</span>}
-            >
-              <Button
-                type="primary"
-                onClick={() => {
-                  history.push({
-                    pathname: "/bankEdit",
-                    state: { item },
-                  });
+            {item.questionCount !== 0 ? (
+              <div className="count-number">
+                <span>共有</span>{" "}
+                <CountTo to={item.questionCount} speed={434} />
+                <span>题目</span>
+              </div>
+            ) : (
+              <Empty
+                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                imageStyle={{
+                  height: 60,
                 }}
+                description={<span>当前题库没有题目</span>}
               >
-                Create Now
-              </Button>
-            </Empty>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    history.push({
+                      pathname: "/bankEdit",
+                      state: { item },
+                    });
+                  }}
+                >
+                  Create Now
+                </Button>
+              </Empty>
+            )}
           </div>
         </div>
       </Card>

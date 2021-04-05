@@ -10,7 +10,7 @@ const layout = {
 };
 
 const QuestionEdit = memo(
-  ({ onRef, action, activeRecord, onHandle, bankId }: any, ref) => {
+  ({ onRef, activeItem, onHandle, bankId }: any, ref) => {
     useImperativeHandle(onRef, () => ({
       showModal,
     }));
@@ -40,28 +40,71 @@ const QuestionEdit = memo(
           const wrongJson = JSON.stringify(wrongAnswer);
           const type = rightAnswer.length > 1 ? 2 : 1;
           const data = {
+            id: activeItem?.id,
             bankId,
             title: value.title,
             rightAnswer: rightJson,
             wrongAnswer: wrongJson,
             type,
           };
-          fetchByBody("/teacher/question/add", data)
-            .then((resp) => {
-              message.success("添加成功");
-              onHandle();
-              showModal();
-            })
-            .catch(() => {});
+          if (activeItem) {
+            fetchByBody("/teacher/question/update", data)
+              .then(() => {
+                message.success("添加成功");
+                onHandle();
+                showModal();
+              })
+              .catch(() => {});
+          } else {
+            fetchByBody("/teacher/question/add", data)
+              .then((resp) => {
+                message.success("添加成功");
+                onHandle();
+                showModal();
+              })
+              .catch(() => {});
+          }
         })
-        .catch((error) => {});
+        .catch(() => {});
     };
     const [form] = Form.useForm();
+    const toFormData = (item: any) => {
+      let data: any = {
+        title: item.title,
+        t1: "",
+        c1: "",
+        t2: "",
+        c2: "",
+        t3: "",
+        c3: "",
+        t4: "",
+        c4: "",
+        t5: "",
+        c5: "",
+      };
+      let i = 1;
+      JSON.parse(item.rightAnswer).forEach((answer: string) => {
+        data[`t${i}`] = "1";
+        data[`c${i}`] = answer;
+        i += 1;
+      });
+      JSON.parse(item.wrongAnswer).forEach((answer: string) => {
+        data[`t${i}`] = "2";
+        data[`c${i}`] = answer;
+        i += 1;
+      });
+      form.setFieldsValue(data);
+    };
     useEffect(() => {
       if (visible) {
-        form.setFieldsValue({ t1: "1", t2: "2", t3: "2", t4: "2", t5: "2" });
+        if (activeItem) {
+          toFormData(activeItem);
+        } else {
+          form.setFieldsValue({ t1: "1", t2: "2", t3: "2", t4: "2", t5: "2" });
+        }
       }
-    }, [form, visible]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form, visible, activeItem]);
     return (
       <Modal
         title="添加题目"
