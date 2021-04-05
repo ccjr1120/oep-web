@@ -120,7 +120,7 @@ const BankEdit = ({ history, location }: any) => {
         </Form>
       </Card>
       <div>
-        <div className="fixed-btn">
+        <div className="fixed-btn fixed-save">
           <Button
             type="primary"
             loading={saveLoading}
