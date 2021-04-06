@@ -1,7 +1,7 @@
 import { Card, Form, Input, Radio } from "antd";
 import Modal from "antd/lib/modal/Modal";
-import { useState } from "react";
-import { fetchByParam } from "../../api/api";
+import { useEffect, useState } from "react";
+import { fetchByBody, fetchByParam } from "../../api/api";
 
 const StartExam = ({ history }: any) => {
   const [visible, setVisible] = useState(true);
@@ -15,6 +15,14 @@ const StartExam = ({ history }: any) => {
       .catch(() => {});
   };
   const [key, setKey] = useState();
+  const [recordId, setRecordId] = useState();
+  useEffect(() => {
+    fetchByBody("/student/exam/checkStart", {}).then((resp) => {
+      if (resp.data) {
+        setRecordId(resp.data);
+      }
+    });
+  }, [recordId]);
   return (
     <>
       <Card>
