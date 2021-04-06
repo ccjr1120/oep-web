@@ -21,7 +21,7 @@ const NewPaper = memo(({ onRef }: any, ref) => {
   const changeVisible = () => {
     setVisible(!visible);
   };
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
   const handleOk = () => {
     let data = form.getFieldsValue();
     const keys = Object.keys(data);
@@ -40,6 +40,7 @@ const NewPaper = memo(({ onRef }: any, ref) => {
     fetchByBody("/teacher/exam/add", data)
       .then(() => {
         message.success("添加成功");
+        changeVisible();
       })
       .catch(() => {});
   };
@@ -74,16 +75,18 @@ const NewPaper = memo(({ onRef }: any, ref) => {
   };
   const [pagination, setPagination] = useState({ current: 1, pageSize: 6 });
   useEffect(() => {
-    fetch();
-    const randomStr = randomString();
-    form.setFieldsValue({
-      minutes: "20",
-      peopleNum: "60",
-      questionNum: "100",
-      isRandom: "0",
-      randomStr,
-    });
-  }, [form]);
+    if (visible) {
+      fetch();
+      const randomStr = randomString();
+      form.setFieldsValue({
+        minutes: "20",
+        peopleNum: "60",
+        questionNum: "100",
+        isRandom: "0",
+        randomStr,
+      });
+    }
+  }, [form, visible]);
   return (
     <Modal
       width="1024px"
@@ -93,7 +96,7 @@ const NewPaper = memo(({ onRef }: any, ref) => {
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <Form form={form} size="small" layout="inline">
+      <Form form={form} size="small" preserve={false} layout="inline">
         <Form.Item name="paperName" label="试卷名" required>
           <Input style={{ width: "380px" }} placeholder="请输入试卷名" />
         </Form.Item>

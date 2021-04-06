@@ -22,7 +22,7 @@ const AutoTable = memo(({ onRef, reqFun, condition, columns }: PropsType) => {
   const fetch = (params = { current: 1, pageSize: 8 }) => {
     let values = { ...params, ...condition };
     setLoading(true);
-    reqFun(values).then((data: any) => {
+    reqFun(values).then(({ data }: any) => {
       if (data) {
         setLoading(false);
         setData(data.records);

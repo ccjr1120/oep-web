@@ -1,13 +1,9 @@
-import { Button, message } from "antd";
-import confirm from "antd/lib/modal/confirm";
+import { Button, Tag } from "antd";
 import { createRef, useState } from "react";
 import { fetchByBody } from "../../api/api";
 import AutoTable, { AutoTableRefType } from "../../components/AutoTable";
 import Filter from "./filter";
-import {
-  ExclamationCircleOutlined,
-  PlaySquareOutlined,
-} from "@ant-design/icons";
+import { PlaySquareOutlined } from "@ant-design/icons";
 import NewPaper from "./newPaper";
 
 const ExamManage = () => {
@@ -16,60 +12,79 @@ const ExamManage = () => {
       title: "试卷名",
       dataIndex: "name",
       key: "name",
+      align: "center",
+      with: "240px",
+    },
+    {
+      title: "口令",
+      dataIndex: "randomStr",
+      key: "randomStr",
+      width: "120px",
+      align: "center",
+    },
+    {
+      title: "是否随机",
+      dataIndex: "isRandom",
+      key: "isRandom",
+      width: "80px",
+      align: "center",
+      render: (value: number) => <> {value === 0 ? "否" : "是"}</>,
+    },
+    {
+      title: "时间限制",
+      dataIndex: "minutes",
+      key: "minutes",
+      width: "80px",
+      align: "center",
+      render: (value: String) => <div>{value}分钟</div>,
     },
     {
       title: "考试时间",
       dataIndex: "createTime",
       key: "createTime",
+      width: "160px",
+      align: "center",
     },
     {
       title: "参与人数",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "partNum",
+      key: "partNum",
+      width: "80px",
+      align: "center",
+      render: (value: String, record: MenuType.RecordType) => (
+        <Button type="text" style={{ color: "#1890ff" }} size="small">
+          {value}
+        </Button>
+      ),
     },
-    { title: "平均分", dataIndex: "address", key: "address" },
-    { title: "状态", dataIndex: "address", key: "address" },
+    {
+      title: "平均分",
+      dataIndex: "average",
+      key: "average",
+      width: "60px",
+      align: "center",
+    },
+    {
+      title: "状态",
+      dataIndex: "state",
+      key: "state",
+      width: "80px",
+      align: "center",
+      render: (value: number) => (
+        <Tag color="cyan"> {["未开始", "正在进行", "已结束"][value]}</Tag>
+      ),
+    },
     {
       title: "操作",
       key: "option",
       dataIndex: "role",
-      width: 200,
+      width: 120,
+      align: "center",
       fixed: "right" as "right",
       render: (_: String, record: MenuType.RecordType) => (
-        <div>
-          {record.parentId !== "/" ? (
-            ""
-          ) : (
-            <Button type="text" style={{ color: "#1890ff" }} size="small">
-              添加子菜单
-            </Button>
-          )}
-          <Button type="text" style={{ color: "#1890ff" }} size="small">
-            编辑
-          </Button>
-          <Button
-            onClick={() => {
-              confirm({
-                title: "确定要删除该菜单吗？",
-                icon: <ExclamationCircleOutlined />,
-                okText: "确认",
-                okType: "danger",
-                cancelText: "取消",
-                onOk() {
-                  fetchByBody("/admin/menu/del", record).then(() => {
-                    message.success("删除成功");
-                  });
-                },
-                onCancel() {},
-              });
-            }}
-            type="text"
-            style={{ color: "red" }}
-            size="small"
-          >
-            删除
-          </Button>
-        </div>
+        <Button type="text" style={{ color: "#1890ff" }} size="small">
+          编辑
+        </Button>
       ),
     },
   ];
