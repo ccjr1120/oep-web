@@ -29,7 +29,7 @@ const Filter = ({ query }: any) => {
           <RangePicker allowClear />
         </Form.Item>
         <Form.Item name="type" style={{ marginTop: "10px" }} label="考试状态">
-          <Select placeholder="请选择考试状态" allowClear style={{ width: "160px" }}>
+          <Select placeholder="请选择考试状态" allowClear style={{ width: "180px" }}>
             <Select.Option value={1}>正在进行</Select.Option>
             <Select.Option value={2}>已结束</Select.Option>
           </Select>

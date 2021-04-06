@@ -46,6 +46,7 @@ const AutoTable = memo(({ onRef, reqFun, condition, columns }: PropsType) => {
   };
   return (
     <Table
+      scroll={{ x: "100%" }}
       rowKey="id"
       bordered
       loading={loading}

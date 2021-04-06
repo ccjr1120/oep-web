@@ -1,10 +1,11 @@
-import { Button, Tag } from "antd";
+import { Button, Form, Input, message, Select, Tag } from "antd";
 import { createRef, useState } from "react";
 import { fetchByBody } from "../../api/api";
 import AutoTable, { AutoTableRefType } from "../../components/AutoTable";
 import Filter from "./filter";
 import { PlaySquareOutlined } from "@ant-design/icons";
 import NewPaper from "./newPaper";
+import Modal from "antd/lib/modal/Modal";
 
 const ExamManage = () => {
   const columns = [
@@ -13,7 +14,7 @@ const ExamManage = () => {
       dataIndex: "name",
       key: "name",
       align: "center",
-      with: "240px",
+      width: 240,
     },
     {
       title: "口令",
@@ -22,13 +23,16 @@ const ExamManage = () => {
       width: "120px",
       align: "center",
     },
+
     {
-      title: "是否随机",
-      dataIndex: "isRandom",
-      key: "isRandom",
-      width: "80px",
+      title: "状态",
+      dataIndex: "state",
+      key: "state",
+      width: 80,
       align: "center",
-      render: (value: number) => <> {value === 0 ? "否" : "是"}</>,
+      render: (value: number) => (
+        <Tag color="cyan"> {["未开始", "正在进行", "已结束"][value]}</Tag>
+      ),
     },
     {
       title: "时间限制",
@@ -39,11 +43,27 @@ const ExamManage = () => {
       render: (value: String) => <div>{value}分钟</div>,
     },
     {
+      title: "人数限制",
+      dataIndex: "peopleNum",
+      key: "peopleNum",
+      width: "80px",
+      align: "center",
+      render: (value: String) => <div>{value}人</div>,
+    },
+    {
       title: "考试时间",
       dataIndex: "createTime",
       key: "createTime",
       width: "160px",
       align: "center",
+    },
+    {
+      title: "是否随机",
+      dataIndex: "isRandom",
+      key: "isRandom",
+      width: "80px",
+      align: "center",
+      render: (value: number) => <> {value === 0 ? "否" : "是"}</>,
     },
     {
       title: "参与人数",
@@ -64,25 +84,23 @@ const ExamManage = () => {
       width: "60px",
       align: "center",
     },
-    {
-      title: "状态",
-      dataIndex: "state",
-      key: "state",
-      width: "80px",
-      align: "center",
-      render: (value: number) => (
-        <Tag color="cyan"> {["未开始", "正在进行", "已结束"][value]}</Tag>
-      ),
-    },
+
     {
       title: "操作",
       key: "option",
       dataIndex: "role",
       width: 120,
       align: "center",
-      fixed: "right" as "right",
-      render: (_: String, record: MenuType.RecordType) => (
-        <Button type="text" style={{ color: "#1890ff" }} size="small">
+      fixed: "right",
+      render: (_: String, record: any) => (
+        <Button
+          type="text"
+          onClick={() => {
+            handleEdit(record);
+          }}
+          style={{ color: "#1890ff" }}
+          size="small"
+        >
           编辑
         </Button>
       ),
@@ -101,6 +119,22 @@ const ExamManage = () => {
     if (modelRef.current) {
       modelRef.current.changeVisible();
     }
+  };
+  const handleEdit = (record: any) => {
+    setActiveRecord(record);
+    form.setFieldsValue({ ...record });
+    setVisible(true);
+  };
+  const [visible, setVisible] = useState(false);
+  const [activeRecord, setActiveRecord] = useState<any>();
+  const [form] = Form.useForm();
+  const handleOk = () => {
+    let data = { id: activeRecord.id, ...form.getFieldsValue() };
+    fetchByBody("/teacher/exam/update", data).then(() => {
+      message.success("更新成功");
+      autoTableRef.current?.fetch();
+      setVisible(false);
+    });
   };
   return (
     <>
@@ -122,6 +156,41 @@ const ExamManage = () => {
         </Button>
       </div>
       <NewPaper onRef={modelRef} />
+      <Modal
+        title="编辑试卷"
+        visible={visible}
+        destroyOnClose
+        onOk={() => {
+          handleOk();
+        }}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      >
+        <Form
+          form={form}
+          labelCol={{ span: 6 }}
+          preserve={false}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item label="时间限制" name="minutes">
+            <Input addonAfter="分钟" />
+          </Form.Item>
+          <Form.Item label="人数限制" name="peopleNum">
+            <Input addonAfter="人" />
+          </Form.Item>
+          <Form.Item
+            name="state"
+            style={{ marginTop: "10px" }}
+            label="考试状态"
+          >
+            <Select placeholder="请选择考试状态" style={{ width: "100%" }}>
+              <Select.Option value={0}>正在进行</Select.Option>
+              <Select.Option value={1}>已结束</Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };
