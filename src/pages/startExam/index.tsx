@@ -1,10 +1,10 @@
-import { Card, Form, Input, Radio } from "antd";
+import { Card, Form, Input, Radio, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
 
 const StartExam = ({ history }: any) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [paperData, setPaperData] = useState([]);
   const handleModelOk = () => {
     fetchByParam("/student/exam/start", { key: key })
@@ -16,16 +16,29 @@ const StartExam = ({ history }: any) => {
   };
   const [key, setKey] = useState();
   const [recordId, setRecordId] = useState();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     fetchByBody("/student/exam/checkStart", {}).then((resp) => {
       if (resp.data) {
+        setVisible(false);
         setRecordId(resp.data);
+        setLoading(false);
+      } else {
+        setVisible(true);
       }
     });
   }, [recordId]);
   return (
     <>
       <Card>
+        <div style={{ textAlign: "center" }}>
+          <Spin
+            style={{ marginTop: "240px" }}
+            spinning={loading}
+            tip="Loading..."
+          ></Spin>
+        </div>
         <Form>
           {paperData.map((item) => {
             return <>1</>;
