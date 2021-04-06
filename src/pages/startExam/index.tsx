@@ -1,7 +1,8 @@
-import { Card, Form, Input, Radio, Spin } from "antd";
+import { Card, Form, Input, List, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
+import QuesItem from "./quesItem";
 
 const StartExam = ({ history }: any) => {
   const [visible, setVisible] = useState(false);
@@ -15,50 +16,50 @@ const StartExam = ({ history }: any) => {
       .catch(() => {});
   };
   const [key, setKey] = useState();
-  const [recordId, setRecordId] = useState();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
     fetchByBody("/student/exam/checkStart", {}).then((resp) => {
       if (resp.data) {
         setVisible(false);
-        setRecordId(resp.data);
-        setLoading(false);
+        fetchByBody("/student/exam/continue", {}).then((resp) => {
+          setPaperData(resp.data);
+          setLoading(false);
+        });
       } else {
         setVisible(true);
       }
     });
-  }, [recordId]);
+  }, []);
   return (
     <>
       <Card>
-        <div style={{ textAlign: "center" }}>
-          <Spin
-            style={{ marginTop: "240px" }}
-            spinning={loading}
-            tip="Loading..."
-          ></Spin>
-        </div>
-        <Form>
-          {paperData.map((item) => {
-            return <>1</>;
-          })}
-          <Form.Item>
-            <h2>1231232231</h2>
-            <Radio.Group onChange={() => {}} value={1}>
-              <Radio value={1}>A:</Radio>
-              <Radio value={2}>B:</Radio>
-              <Radio value={3}>C:</Radio>
-              <Radio value={4}>D:</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </Form>
+        {loading ? (
+          <div style={{ textAlign: "center" }}>
+            <Spin
+              style={{ marginTop: "160px" }}
+              spinning={loading}
+              tip="Loading..."
+            ></Spin>
+          </div>
+        ) : (
+          <List
+            bordered
+            dataSource={paperData}
+            renderItem={(item, i) => (
+              <List.Item>
+                <QuesItem item={item} i={i + 1} />{" "}
+              </List.Item>
+            )}
+          />
+        )}
       </Card>
       <Modal
         title="输入口令"
         visible={visible}
         closable={false}
         maskClosable={false}
+        okButtonProps={{ disabled: !key }}
         onOk={() => {
           handleModelOk();
         }}
