@@ -13,7 +13,7 @@ const columns = [
   },
 ];
 
-const NewPaper = memo(({ onRef }: any, ref) => {
+const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
   useImperativeHandle(onRef, () => ({
     changeVisible,
   }));
@@ -41,6 +41,7 @@ const NewPaper = memo(({ onRef }: any, ref) => {
       .then(() => {
         message.success("添加成功");
         changeVisible();
+        onHandle();
       })
       .catch(() => {});
   };

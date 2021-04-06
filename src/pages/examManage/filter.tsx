@@ -30,8 +30,8 @@ const Filter = ({ query }: any) => {
         </Form.Item>
         <Form.Item name="type" style={{ marginTop: "10px" }} label="考试状态">
           <Select placeholder="请选择考试状态" allowClear style={{ width: "180px" }}>
-            <Select.Option value={1}>正在进行</Select.Option>
-            <Select.Option value={2}>已结束</Select.Option>
+            <Select.Option value={0}>正在进行</Select.Option>
+            <Select.Option value={1}>已结束</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item style={{ marginTop: "10px" }}>

@@ -157,7 +157,7 @@ const ExamManage = () => {
           开始一场考试
         </Button>
       </div>
-      <NewPaper onRef={modelRef} />
+      <NewPaper onRef={modelRef} onHandle={query} />
       <Modal
         title="编辑试卷"
         visible={visible}
