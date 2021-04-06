@@ -1,6 +1,7 @@
 import { Card, Form, Input, message, Modal, Select, Space, Table } from "antd";
 import { memo, useEffect, useImperativeHandle, useState } from "react";
 import { fetchByBody } from "../../api/api";
+import { randomString } from "../../utils";
 const columns = [
   {
     title: "题库名",
@@ -74,7 +75,15 @@ const NewPaper = memo(({ onRef }: any, ref) => {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 6 });
   useEffect(() => {
     fetch();
-  }, []);
+    const randomStr = randomString();
+    form.setFieldsValue({
+      minutes: "20",
+      peopleNum: "60",
+      questionNum: "100",
+      isRandom: "0",
+      randomStr,
+    });
+  }, [form]);
   return (
     <Modal
       width="1024px"
@@ -125,7 +134,7 @@ const NewPaper = memo(({ onRef }: any, ref) => {
             name="isRandom"
             style={{ marginTop: "10px" }}
             label="是否随机"
-            tooltip="1"
+            tooltip="选择是，每个学生的试卷都是不同的；否则相同。"
             required
           >
             <Select style={{ width: "60px" }}>
