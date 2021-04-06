@@ -31,7 +31,9 @@ const ExamManage = () => {
       width: 80,
       align: "center",
       render: (value: number) => (
-        <Tag color="cyan"> {["未开始", "正在进行", "已结束"][value]}</Tag>
+        <Tag color={["cyan", "red"][value]}>
+          {["正在进行", "已结束"][value]}
+        </Tag>
       ),
     },
     {
@@ -160,6 +162,7 @@ const ExamManage = () => {
         title="编辑试卷"
         visible={visible}
         destroyOnClose
+        width="360px"
         onOk={() => {
           handleOk();
         }}
