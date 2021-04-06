@@ -30,6 +30,11 @@ const menuList: Array<MenuType> = [
     path: "/myExam",
   },
   {
+    key: "das",
+    name: "参与一场考试",
+    path: "/startExam",
+  },
+  {
     key: "e",
     name: "学生信息",
     path: "/studentInfo",

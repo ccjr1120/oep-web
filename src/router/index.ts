@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import ExamManage from "../pages/examManage";
 import QuestionBank from "../pages/questionBank";
 import BankEdit from "../pages/questionBank/edit";
+import StartExam from "../pages/startExam";
 import AccountManage from "../pages/system/AccountManage";
 import MenuManage from "../pages/system/MenuManage";
 
@@ -21,6 +22,11 @@ const routes: Array<IRoute> = [
     path: "/bankEdit",
     component: BankEdit,
     name: "题库编辑",
+  },
+  {
+    path: "/startExam",
+    component: StartExam,
+    name: "参与一场考试",
   },
   { path: "/examManage", component: ExamManage, name: "考试管理" },
   {
