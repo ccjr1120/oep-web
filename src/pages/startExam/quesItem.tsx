@@ -3,7 +3,7 @@ import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { memo, useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
 
-const QuesItem = memo(({ item, i }: any) => {
+const QuesItem = memo(({ item, i, hintText }: any) => {
   const radioStyle = {
     display: "block",
     marginTop: "8px",
@@ -22,6 +22,7 @@ const QuesItem = memo(({ item, i }: any) => {
       let value = { id: item.questionId, answer };
       fetchByBody("/student/exam/saveAnswer", value).then(() => {
         setIsOk(true);
+        hintText("最近一次保存的题目为:第" + i + "题");
       });
     } else {
       fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
@@ -39,6 +40,7 @@ const QuesItem = memo(({ item, i }: any) => {
         id: item.questionId,
         answer: value,
       }).then(() => {
+        hintText("最近一次保存的题目为:第" + i + "题");
         setIsOk(true);
       });
     } else {

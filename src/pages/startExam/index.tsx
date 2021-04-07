@@ -2,21 +2,27 @@ import { Button, Card, Form, Input, List, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
+import { SaveOutlined } from "@ant-design/icons";
 import QuesItem from "./quesItem";
 
 const StartExam = ({ history }: any) => {
   const [visible, setVisible] = useState(false);
   const [paperData, setPaperData] = useState([]);
+  const [hintText, setHintTest] = useState<string>("");
+  const [key, setKey] = useState();
+  const [loading, setLoading] = useState(false);
   const handleModelOk = () => {
     fetchByParam("/student/exam/start", { key: key })
       .then((resp) => {
         setPaperData(resp.data);
+        setLoading(false);
         setVisible(false);
       })
       .catch(() => {});
   };
-  const [key, setKey] = useState();
-  const [loading, setLoading] = useState(false);
+  const handleHintText = (s: string) => {
+    setHintTest(s);
+  };
   useEffect(() => {
     setLoading(true);
     fetchByBody("/student/exam/checkStart", {}).then((resp) => {
@@ -48,14 +54,33 @@ const StartExam = ({ history }: any) => {
             dataSource={paperData}
             renderItem={(item, i) => (
               <List.Item>
-                <QuesItem item={item} i={i + 1} />{" "}
+                <QuesItem hintText={handleHintText} item={item} i={i + 1} />{" "}
               </List.Item>
             )}
           />
         )}
       </Card>
-      <div>
-        <Button type="primary">131321</Button>
+      <div
+        className="fixed-btn"
+        style={{
+          right: "40px",
+          boxShadow: "0px -2px 15px rgba(104, 100, 100, 0.55)",
+        }}
+      >
+        <Button size="large" type="primary" icon={<SaveOutlined />}>
+          提交
+        </Button>
+        <div
+          style={{
+            position: "absolute",
+            fontSize: "12px",
+            width: "200px",
+            left: "-40px",
+            color: "rgba(0,0,0,0.6)",
+          }}
+        >
+          {hintText}
+        </div>
       </div>
       <Modal
         title="输入口令"
