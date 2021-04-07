@@ -1,4 +1,4 @@
-import { Card, Form, Input, List, Spin } from "antd";
+import { Button, Card, Form, Input, List, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
@@ -54,6 +54,9 @@ const StartExam = ({ history }: any) => {
           />
         )}
       </Card>
+      <div>
+        <Button type="primary">131321</Button>
+      </div>
       <Modal
         title="输入口令"
         visible={visible}

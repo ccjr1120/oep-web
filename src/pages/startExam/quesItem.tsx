@@ -1,17 +1,63 @@
-import { Checkbox, Radio, Tag } from "antd";
-import { memo } from "react";
+import { Checkbox, Radio, RadioChangeEvent, Tag } from "antd";
+import { CheckboxValueType } from "antd/lib/checkbox/Group";
+import { memo, useState } from "react";
+import { fetchByBody, fetchByParam } from "../../api/api";
 
 const QuesItem = memo(({ item, i }: any) => {
   const radioStyle = {
     display: "block",
+    marginTop: "8px",
     height: "30px",
     lineHeight: "30px",
+    fontSize: "18px",
+    fontWeight: 490,
+  };
+  const [isOk, setIsOk] = useState(true);
+  const handleRadio = (e: RadioChangeEvent) => {
+    setIsOk(true);
+    if (e.target.value) {
+      const answer = [e.target.value];
+      let value = { id: item.questionId, answer };
+      fetchByBody("/student/exam/saveAnswer", value).then(() => {
+        setIsOk(false);
+      });
+    } else {
+      fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
+        () => {
+          setIsOk(true);
+        }
+      );
+    }
+  };
+  const handleCheck = (value: CheckboxValueType[]) => {
+    setIsOk(true);
+    if (value && value.length > 0) {
+      fetchByBody("/student/exam/saveAnswer", {
+        id: item.questionId,
+        answer: value,
+      }).then(() => {
+        setIsOk(false);
+      });
+    } else {
+      fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
+        () => {
+          setIsOk(true);
+        }
+      );
+    }
   };
   return (
-    <div style={{ margin: "10px 16" }}>
+    <div style={{ margin: "12px 20px" }}>
       <div>
-        <div style={{}}>
-          <Tag style={{ float: "left" }} color="green">
+        <div>
+          <Tag
+            style={{
+              float: "left",
+              marginTop: "7px",
+              visibility: isOk ? "hidden" : "unset",
+            }}
+            color="success"
+          >
             ✔
           </Tag>
           <div
@@ -19,15 +65,21 @@ const QuesItem = memo(({ item, i }: any) => {
               marginBottom: 0,
               wordWrap: "break-word",
               overflow: "hidden",
+              fontSize: "22px",
+              fontWeight: 500,
             }}
           >
             第{i}题：{item.question}
           </div>
         </div>
       </div>
-      <div style={{ marginTop: "40px" }}>
+      <div style={{ marginTop: "12px", marginLeft: "32px" }}>
         {item.type === 1 ? (
-          <Radio.Group>
+          <Radio.Group
+            onChange={(e) => {
+              handleRadio(e);
+            }}
+          >
             {item.answerItems.map((item: any, i: number) => {
               return (
                 <Radio key={i} value={item.value} style={radioStyle}>
@@ -37,7 +89,11 @@ const QuesItem = memo(({ item, i }: any) => {
             })}
           </Radio.Group>
         ) : (
-          <Checkbox.Group>
+          <Checkbox.Group
+            onChange={(e) => {
+              handleCheck(e);
+            }}
+          >
             {item.answerItems.map((item: any, i: number) => {
               return (
                 <>

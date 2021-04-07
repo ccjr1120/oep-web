@@ -38,7 +38,7 @@ const QuestionEdit = memo(
           }
           const rightJson = JSON.stringify(rightAnswer);
           const wrongJson = JSON.stringify(wrongAnswer);
-          const type = rightAnswer.length > 1 ? 2 : 1;
+          const type = rightAnswer.length > 1 ? 2 : 1;          
           const data = {
             id: activeItem?.id,
             bankId,
@@ -57,7 +57,7 @@ const QuestionEdit = memo(
               .catch(() => {});
           } else {
             fetchByBody("/teacher/question/add", data)
-              .then((resp) => {
+              .then(() => {
                 message.success("添加成功");
                 onHandle();
                 showModal();
@@ -107,7 +107,7 @@ const QuestionEdit = memo(
     }, [form, visible, activeItem]);
     return (
       <Modal
-        title="添加题目"
+        title={activeItem ? "编辑题目" : "添加题目"}
         width="600px"
         visible={visible}
         onOk={submit}
