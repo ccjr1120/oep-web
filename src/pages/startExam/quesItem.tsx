@@ -3,7 +3,7 @@ import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { memo, useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
 
-const QuesItem = memo(({ item, i, hintText }: any) => {
+const QuesItem = memo(({ item, i, hintText, handleAnswerList }: any) => {
   const radioStyle = {
     display: "block",
     marginTop: "8px",
@@ -23,10 +23,12 @@ const QuesItem = memo(({ item, i, hintText }: any) => {
       fetchByBody("/student/exam/saveAnswer", value).then(() => {
         setIsOk(true);
         hintText("最近一次保存的题目为:第" + i + "题");
+        handleAnswerList(i, 1);
       });
     } else {
       fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
         () => {
+          handleAnswerList(i, 0);
           setIsOk(false);
         }
       );
@@ -42,10 +44,12 @@ const QuesItem = memo(({ item, i, hintText }: any) => {
       }).then(() => {
         hintText("最近一次保存的题目为:第" + i + "题");
         setIsOk(true);
+        handleAnswerList(i, 1);
       });
     } else {
       fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
         () => {
+          handleAnswerList(i, 0);
           setIsOk(false);
         }
       );
@@ -56,7 +60,7 @@ const QuesItem = memo(({ item, i, hintText }: any) => {
       setIsOk(true);
       setDefaultValue(item.myAnswer);
     }
-  }, [item]);
+  }, [item, i]);
   return (
     <div style={{ margin: "12px 20px" }}>
       <div>

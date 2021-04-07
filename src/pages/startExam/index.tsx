@@ -1,9 +1,10 @@
-import { Button, Card, Form, Input, List, Spin } from "antd";
+import { Button, Card, Form, Input, List, message, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
-import { SaveOutlined } from "@ant-design/icons";
+import { SaveOutlined, SmileTwoTone } from "@ant-design/icons";
 import QuesItem from "./quesItem";
+import confirm from "antd/lib/modal/confirm";
 
 const StartExam = ({ history }: any) => {
   const [visible, setVisible] = useState(false);
@@ -11,6 +12,7 @@ const StartExam = ({ history }: any) => {
   const [hintText, setHintTest] = useState<string>("");
   const [key, setKey] = useState();
   const [loading, setLoading] = useState(false);
+  const [answerList, setAnswerList] = useState<Array<number>>([]);
   const handleModelOk = () => {
     fetchByParam("/student/exam/start", { key: key })
       .then((resp) => {
@@ -23,6 +25,17 @@ const StartExam = ({ history }: any) => {
   const handleHintText = (s: string) => {
     setHintTest(s);
   };
+  const handleAnswerList = (i: number, action: number) => {
+    const data = [...answerList];
+    if (action === 0) {
+      data.splice(data.indexOf(i), 1);
+    } else {
+      if (data.indexOf(i) === -1) {
+        data.push(i);
+      }
+    }
+    setAnswerList(data);
+  };
   useEffect(() => {
     setLoading(true);
     fetchByBody("/student/exam/checkStart", {}).then((resp) => {
@@ -31,6 +44,13 @@ const StartExam = ({ history }: any) => {
         fetchByBody("/student/exam/continue", {}).then((resp) => {
           setPaperData(resp.data);
           setLoading(false);
+          const data: Array<number> = [];
+          resp.data.forEach((item: any, i: number) => {
+            if (item.myAnswer) {
+              data.push(i + 1);
+            }
+          });
+          setAnswerList(data);
         });
       } else {
         setVisible(true);
@@ -54,7 +74,12 @@ const StartExam = ({ history }: any) => {
             dataSource={paperData}
             renderItem={(item, i) => (
               <List.Item>
-                <QuesItem hintText={handleHintText} item={item} i={i + 1} />{" "}
+                <QuesItem
+                  handleAnswerList={handleAnswerList}
+                  hintText={handleHintText}
+                  item={item}
+                  i={i + 1}
+                />
               </List.Item>
             )}
           />
@@ -67,8 +92,27 @@ const StartExam = ({ history }: any) => {
           boxShadow: "0px -2px 15px rgba(104, 100, 100, 0.55)",
         }}
       >
-        <Button size="large" type="primary" icon={<SaveOutlined />}>
-          提交
+        <Button
+          onClick={() => {
+            confirm({
+              title: "确定要结束本场考试吗？",
+              icon: <SmileTwoTone />,
+              okText: "确认",
+              okType: "primary",
+              cancelText: "取消",
+              onOk() {
+                fetchByBody("/student/exam/done", {}).then((resp) => {
+                  message.success("提交成功");
+                });
+              },
+              onCancel() {},
+            });
+          }}
+          size="large"
+          type="primary"
+          icon={<SaveOutlined />}
+        >
+          提交{answerList.length}/{paperData.length}
         </Button>
         <div
           style={{
