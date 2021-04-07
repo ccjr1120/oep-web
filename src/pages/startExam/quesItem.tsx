@@ -1,6 +1,6 @@
 import { Checkbox, Radio, RadioChangeEvent, Tag } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { fetchByBody, fetchByParam } from "../../api/api";
 
 const QuesItem = memo(({ item, i }: any) => {
@@ -12,40 +12,49 @@ const QuesItem = memo(({ item, i }: any) => {
     fontSize: "18px",
     fontWeight: 490,
   };
-  const [isOk, setIsOk] = useState(true);
+  const [isOk, setIsOk] = useState(false);
+  const [defaultValue, setDefaultValue] = useState<Array<any>>([]);
   const handleRadio = (e: RadioChangeEvent) => {
-    setIsOk(true);
+    setIsOk(false);
     if (e.target.value) {
+      setDefaultValue([e.target.value]);
       const answer = [e.target.value];
       let value = { id: item.questionId, answer };
       fetchByBody("/student/exam/saveAnswer", value).then(() => {
-        setIsOk(false);
+        setIsOk(true);
       });
     } else {
       fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
         () => {
-          setIsOk(true);
+          setIsOk(false);
         }
       );
     }
   };
   const handleCheck = (value: CheckboxValueType[]) => {
-    setIsOk(true);
+    setDefaultValue(value);
+    setIsOk(false);
     if (value && value.length > 0) {
       fetchByBody("/student/exam/saveAnswer", {
         id: item.questionId,
         answer: value,
       }).then(() => {
-        setIsOk(false);
+        setIsOk(true);
       });
     } else {
       fetchByParam("/student/exam/clearAnswer", { id: item.questionId }).then(
         () => {
-          setIsOk(true);
+          setIsOk(false);
         }
       );
     }
   };
+  useEffect(() => {
+    if (item.myAnswer != null) {
+      setIsOk(true);
+      setDefaultValue(item.myAnswer);
+    }
+  }, [item]);
   return (
     <div style={{ margin: "12px 20px" }}>
       <div>
@@ -54,7 +63,7 @@ const QuesItem = memo(({ item, i }: any) => {
             style={{
               float: "left",
               marginTop: "7px",
-              visibility: isOk ? "hidden" : "unset",
+              visibility: isOk ? "unset" : "hidden",
             }}
             color="success"
           >
@@ -76,6 +85,7 @@ const QuesItem = memo(({ item, i }: any) => {
       <div style={{ marginTop: "12px", marginLeft: "32px" }}>
         {item.type === 1 ? (
           <Radio.Group
+            value={defaultValue[0]}
             onChange={(e) => {
               handleRadio(e);
             }}
@@ -90,6 +100,7 @@ const QuesItem = memo(({ item, i }: any) => {
           </Radio.Group>
         ) : (
           <Checkbox.Group
+            value={defaultValue}
             onChange={(e) => {
               handleCheck(e);
             }}
