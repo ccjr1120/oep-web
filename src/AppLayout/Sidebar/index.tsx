@@ -9,11 +9,11 @@ export interface MenuType {
 }
 
 const menuList: Array<MenuType> = [
-  {
-    key: "a",
-    name: "首页",
-    path: "/overview",
-  },
+  // {
+  //   key: "a",
+  //   name: "首页",
+  //   path: "/overview",
+  // },
   {
     key: "b",
     name: "题库管理",
@@ -34,11 +34,11 @@ const menuList: Array<MenuType> = [
     name: "参与一场考试",
     path: "/startExam",
   },
-  {
-    key: "e",
-    name: "学生信息",
-    path: "/studentInfo",
-  },
+  // {
+  //   key: "e",
+  //   name: "学生信息",
+  //   path: "/studentInfo",
+  // },
   {
     key: "f",
     name: "个人信息",

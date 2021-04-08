@@ -1,4 +1,8 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+} from "react-router-dom";
 import AppLayout from "./AppLayout/index";
 import zhCN from "antd/lib/locale/zh_CN";
 import "./App.scss";
@@ -9,10 +13,13 @@ const App = () => {
   return (
     <ConfigProvider locale={zhCN}>
       <Router>
-        <Switch>
-          <Route path="/app" component={AppLayout}></Route>
-          <Route path="/login" component={Login}></Route>
-        </Switch>
+        <Redirect
+          to={{
+            pathname: "/app",
+          }}
+        />
+        <Route path="/app" component={AppLayout}></Route>
+        <Route path="/login" component={Login}></Route>
       </Router>
     </ConfigProvider>
   );
