@@ -10,7 +10,6 @@ import { fetchByBody } from "../../../api/api";
 import { roleList } from "../../../constant";
 
 const { Option } = Select;
-
 export interface ChildRef {
   showModal: Function;
 }
@@ -18,16 +17,6 @@ export interface ChildRef {
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 },
-};
-
-const loopMenuList = (menuList: []) => {
-  return menuList.map((item: MenuType.RecordType) => {
-    return (
-      <Option key={item.id} value={item.id}>
-        {item.name}
-      </Option>
-    );
-  });
 };
 interface PropsType {
   action: number;
@@ -73,12 +62,14 @@ const AddOrUpdate = memo(
       setIsModalVisible(false);
     };
     const [menuForm] = Form.useForm();
-    const [firstMenuList, setFirstMenuList] = useState<[]>([]);
+    const [firstMenuList, setFirstMenuList] = useState<
+      Array<MenuType.RecordType>
+    >();
     useEffect(() => {
       if (isModalVisible) {
         fetchByBody("/admin/menu/listFirstMenu").then((resp: any) => {
-          setFirstMenuList(resp);
-          menuForm.setFieldsValue({parentId:activeMenu?.id||'/'})
+          setFirstMenuList(resp.data);
+          menuForm.setFieldsValue({ parentId: activeMenu?.id || "/" });
           if (action === 2) {
             if (activeMenu) {
               const formData: MenuType.RecordType = Object.assign(
@@ -114,7 +105,13 @@ const AddOrUpdate = memo(
           >
             <Select placeholder="选择父级菜单" optionFilterProp="children">
               <Option value="/">Root</Option>
-              {loopMenuList(firstMenuList)}
+              {firstMenuList?.map((item: MenuType.RecordType) => {
+                return (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
 
@@ -129,6 +126,13 @@ const AddOrUpdate = memo(
             label="路由地址"
             name="path"
             rules={[{ required: true, message: "请输入路由地址!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="排序标识"
+            name="sort"
+            rules={[{ required: true, message: "请输入排序标识!" }]}
           >
             <Input />
           </Form.Item>

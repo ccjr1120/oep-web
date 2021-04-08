@@ -1,12 +1,26 @@
 import Avatar from "antd/lib/avatar/avatar";
 import { UserOutlined } from "@ant-design/icons";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
+import { useHistory } from "react-router";
+import { fetchByBody } from "../../api/api";
 
-const dropAvatar = () => {
+const DropAvatar = () => {
+  const history = useHistory();
+  const handleLogout = () => {
+    fetchByBody("/logout", {}).then(() => {
+      message.success("注销成功");
+      history.push("/login");
+    });
+  };
   const dropMenu = (
     <Menu>
-      <Menu.Item>我的消息</Menu.Item>
-      <Menu.Item>退出</Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          handleLogout();
+        }}
+      >
+        退出
+      </Menu.Item>
     </Menu>
   );
 
@@ -20,7 +34,7 @@ const dropAvatar = () => {
 const MyHeader = () => {
   return (
     <div style={{ position: "relative", height: "100%" }}>
-      <div style={{ position: "absolute", right: 0 }}>{dropAvatar()}</div>
+      <div style={{ position: "absolute", right: 0 }}>{DropAvatar()}</div>
     </div>
   );
 };
