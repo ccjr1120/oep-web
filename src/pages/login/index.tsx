@@ -6,9 +6,9 @@ import { fetchByParam } from "../../api/api";
 const Login = ({ history }: any) => {
   const imgIndex = parseInt(Math.random() * 6 + 1 + "");
   const onFinish = (values: any) => {
-    fetchByParam("/login", values).then(() => {
+    fetchByParam("/login", values).then((resp) => {
       message.success("登录成功");
-      sessionStorage.setItem("user", "user");
+      sessionStorage.setItem("user", resp.data);
       history.push("/app/overview");
     });
   };

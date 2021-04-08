@@ -1,6 +1,8 @@
 import { Menu } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchByBody } from "../../api/api";
 export interface MenuType {
   key: String;
   path?: String;
@@ -8,59 +10,59 @@ export interface MenuType {
   children?: Array<MenuType>;
 }
 
-const menuList: Array<MenuType> = [
-  // {
-  //   key: "a",
-  //   name: "首页",
-  //   path: "/overview",
-  // },
-  {
-    key: "b",
-    name: "题库管理",
-    path: "/questionBank",
-  },
-  {
-    key: "c",
-    name: "考试管理",
-    path: "/examManage",
-  },
-  {
-    key: "d",
-    name: "我的考试",
-    path: "/myExam",
-  },
-  {
-    key: "das",
-    name: "参与一场考试",
-    path: "/startExam",
-  },
-  // {
-  //   key: "e",
-  //   name: "学生信息",
-  //   path: "/studentInfo",
-  // },
-  {
-    key: "f",
-    name: "个人信息",
-    path: "/personalInfo",
-  },
-  {
-    key: "z",
-    name: "系统管理",
-    children: [
-      {
-        key: "z1",
-        path: "/menuManage",
-        name: "菜单管理",
-      },
-      {
-        key: "z2",
-        path: "/accountManage",
-        name: "账号管理",
-      },
-    ],
-  },
-];
+// const menuList: Array<MenuType> = [
+//   // {
+//   //   key: "a",
+//   //   name: "首页",
+//   //   path: "/overview",
+//   // },
+//   {
+//     key: "b",
+//     name: "题库管理",
+//     path: "/questionBank",
+//   },
+//   {
+//     key: "c",
+//     name: "考试管理",
+//     path: "/examManage",
+//   },
+//   {
+//     key: "d",
+//     name: "我的考试",
+//     path: "/myExam",
+//   },
+//   {
+//     key: "das",
+//     name: "参与一场考试",
+//     path: "/startExam",
+//   },
+//   // {
+//   //   key: "e",
+//   //   name: "学生信息",
+//   //   path: "/studentInfo",
+//   // },
+//   {
+//     key: "f",
+//     name: "个人信息",
+//     path: "/personalInfo",
+//   },
+//   {
+//     key: "z",
+//     name: "系统管理",
+//     children: [
+//       {
+//         key: "z1",
+//         path: "/menuManage",
+//         name: "菜单管理",
+//       },
+//       {
+//         key: "z2",
+//         path: "/accountManage",
+//         name: "账号管理",
+//       },
+//     ],
+//   },
+// ];
 
 const loopMenu = (menuList: Array<MenuType>) => {
   return menuList.map((menu, i) => {
@@ -75,7 +77,7 @@ const loopMenu = (menuList: Array<MenuType>) => {
       }
       return (
         <Menu.Item style={firstStyle} key={`${menu.key}`}>
-          <Link to={`/app${menu.path}`}>{menu.name}</Link>
+          <Link to={`${menu.path}`}>{menu.name}</Link>
         </Menu.Item>
       );
     }
@@ -84,6 +86,12 @@ const loopMenu = (menuList: Array<MenuType>) => {
 };
 
 const MySidebar = () => {
+  const [menuList, setMenuList] = useState<Array<MenuType>>([]);
+  useEffect(() => {
+    fetchByBody("/common/curMenus", {}).then((resp) => {
+      setMenuList(resp.data);
+    });
+  }, []);
   return (
     <div style={{ height: "100%" }}>
       <div style={{ height: "64px", textAlign: "center", lineHeight: "64px" }}>
