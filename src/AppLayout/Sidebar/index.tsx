@@ -75,7 +75,7 @@ const loopMenu = (menuList: Array<MenuType>) => {
       }
       return (
         <Menu.Item style={firstStyle} key={`${menu.key}`}>
-          <Link to={`${menu.path}`}>{menu.name}</Link>
+          <Link to={`/app${menu.path}`}>{menu.name}</Link>
         </Menu.Item>
       );
     }

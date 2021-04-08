@@ -14,28 +14,28 @@ export interface IRoute {
 
 const routes: Array<IRoute> = [
   {
-    path: "/questionBank",
+    path: "/app/questionBank",
     component: QuestionBank,
     name: "题库管理",
   },
   {
-    path: "/bankEdit",
+    path: "/app/bankEdit",
     component: BankEdit,
     name: "题库编辑",
   },
   {
-    path: "/startExam",
+    path: "/app/startExam",
     component: StartExam,
     name: "参与一场考试",
   },
-  { path: "/examManage", component: ExamManage, name: "考试管理" },
+  { path: "/app/examManage", component: ExamManage, name: "考试管理" },
   {
-    path: "/menuManage",
+    path: "/app/menuManage",
     component: MenuManage,
     name: "菜单管理",
   },
   {
-    path: "/accountManage",
+    path: "/app/accountManage",
     component: AccountManage,
     name: "账号管理",
   },
