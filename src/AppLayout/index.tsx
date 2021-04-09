@@ -8,6 +8,7 @@ import { useEffect } from "react";
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = ({ history }: any) => {
+  window.router = history;
   useEffect(() => {
     if (!sessionStorage.getItem("user")) {
       history.push("/login");

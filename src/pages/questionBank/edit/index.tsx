@@ -106,7 +106,7 @@ const BankEdit = ({ history, location }: any) => {
                 </Form.Item>
               </Col>
               <Col style={{ paddingTop: "10px" }} span={4}>
-                <a style={{ fontSize: "12px" }} href="Excel导入模板.xlsx">
+                <a style={{ fontSize: "12px" }} download href={"/Excel导入模板.xlsx"}>
                   下载Excel模板
                 </a>
               </Col>

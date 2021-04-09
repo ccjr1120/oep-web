@@ -17,7 +17,7 @@ const BankCard = memo(({ item, history }: PropsType) => {
         extra={
           <Button
             onClick={() => {
-              history.push({ pathname: "/bankEdit/", state: { item } });
+              history.push({ pathname: "/app/bankEdit/", state: { item } });
             }}
             type="text"
             size="small"
@@ -52,7 +52,7 @@ const BankCard = memo(({ item, history }: PropsType) => {
                   type="primary"
                   onClick={() => {
                     history.push({
-                      pathname: "/bankEdit",
+                      pathname: "/app/bankEdit",
                       state: { item },
                     });
                   }}

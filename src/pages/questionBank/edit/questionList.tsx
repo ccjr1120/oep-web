@@ -1,6 +1,6 @@
-import { List, Button, message } from "antd";
+import { List, Button, message, Upload } from "antd";
 import { createRef, memo, useEffect, useState } from "react";
-import { fetchByParam } from "../../../api/api";
+import { fetchByParam, fetchByFile } from "../../../api/api";
 import QuestionEdit from "./questionEdit";
 import QuestionItem from "./questionItem";
 import {
@@ -13,6 +13,29 @@ import confirm from "antd/lib/modal/confirm";
 
 const modelRef = createRef<any>();
 const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
+  const handleUpload = ({ file }: any) => {
+    if (!bankName) {
+      message.error("导入题目前，标题不能为空");
+      return;
+    }
+    let params = new FormData();
+    params.append("file", file);
+    params.append("bankId", bankId);
+    fetchByFile("/teacher/question/excel", params).then((resp: any) => {
+      if (resp.code === 0) {
+        let { successNum, failItemList } = resp.data;
+        let str = "";
+        str += `导入结束,成功数量:${successNum}\n`;
+        str += `导入失败数量:${failItemList.length}`;
+        failItemList.forEach((item: any) => {
+          str += `失败列数:${item.col},原因:${item.reason}`;
+        });
+        message.info(str);
+        fetch();
+      }
+    });
+  };
+
   const addQuestion = () => {
     setActiveItem(undefined);
     if (!bankName) {
@@ -69,14 +92,16 @@ const QuestionList = memo(({ updateTime, bankName, bankId }: any) => {
             >
               + 添加新题目
             </Button>
-            <Button
-              style={{ color: "green" }}
-              type="link"
-              size="small"
-              icon={<FileExcelOutlined />}
-            >
-              Excel导入
-            </Button>
+            <Upload customRequest={handleUpload} showUploadList={false}>
+              <Button
+                style={{ color: "green" }}
+                type="link"
+                size="small"
+                icon={<FileExcelOutlined />}
+              >
+                Excel导入
+              </Button>
+            </Upload>
             <span
               style={{
                 float: "right",

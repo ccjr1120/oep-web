@@ -34,7 +34,7 @@ const QuestionBank = ({ history }: any) => {
         <Button
           style={{ marginLeft: "40px" }}
           onClick={() => {
-            history.push({ pathname: "/bankEdit/", state: {} });
+            history.push({ pathname: "/app/bankEdit/", state: {} });
           }}
           type="primary"
         >

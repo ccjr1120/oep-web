@@ -15,3 +15,12 @@ export const fetchByParam = (url: String, data: any) => {
     method: "post",
   });
 };
+
+export const fetchByFile = (url: String, data: any) => {
+  return request({
+    url: url + "",
+    method: "post",
+    data,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
