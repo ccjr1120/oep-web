@@ -1,8 +1,22 @@
-import { Avatar, Button, Card, Col, Form, Input, Row, Tabs } from "antd";
+import { Avatar, Button, Card, Form, Input, Tabs, Upload } from "antd";
 import "./index.scss";
+import { PlusOutlined } from "@ant-design/icons";
+import { fetchByFile } from "../../api/api";
+import { useEffect, useState } from "react";
+
 const { TabPane } = Tabs;
 
 const PersonalCenter = () => {
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const handleUpload = ({ file }: any) => {
+    let params = new FormData();
+    params.append("file", file);
+    fetchByFile("/common/upload", params).then((resp: any) => {
+      if (resp.code === 0) {
+        setAvatarUrl("http://localhost:8080" + resp.data);
+      }
+    });
+  };
   return (
     <>
       <Card>
@@ -12,8 +26,29 @@ const PersonalCenter = () => {
               style={{ boxShadow: "2px 1px 12px rgba(0,0,0,.2)" }}
               title="个人资料"
             >
-              <div style={{ textAlign: "center", paddingLeft: "24px" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  paddingLeft: "24px",
+                  position: "relative",
+                }}
+              >
                 <Avatar size={128}></Avatar>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "120px",
+                    right: "80px",
+                  }}
+                >
+                  <Upload customRequest={handleUpload} showUploadList={false}>
+                    <Button
+                      type="primary"
+                      shape="circle"
+                      icon={<PlusOutlined />}
+                    ></Button>
+                  </Upload>
+                </div>
               </div>
               <ul style={{ paddingLeft: "24px" }}>
                 <li>
