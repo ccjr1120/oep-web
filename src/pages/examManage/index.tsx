@@ -36,22 +36,22 @@ const ExamManage = () => {
         </Tag>
       ),
     },
-    {
-      title: "时间限制",
-      dataIndex: "minutes",
-      key: "minutes",
-      width: "80px",
-      align: "center",
-      render: (value: String) => <div>{value}分钟</div>,
-    },
-    {
-      title: "人数限制",
-      dataIndex: "peopleNum",
-      key: "peopleNum",
-      width: "80px",
-      align: "center",
-      render: (value: String) => <div>{value}人</div>,
-    },
+    // {
+    //   title: "时间限制",
+    //   dataIndex: "minutes",
+    //   key: "minutes",
+    //   width: "80px",
+    //   align: "center",
+    //   render: (value: String) => <div>{value}分钟</div>,
+    // },
+    // {
+    //   title: "人数限制",
+    //   dataIndex: "peopleNum",
+    //   key: "peopleNum",
+    //   width: "80px",
+    //   align: "center",
+    //   render: (value: String) => <div>{value}人</div>,
+    // },
     {
       title: "考试时间",
       dataIndex: "createTime",
@@ -154,7 +154,7 @@ const ExamManage = () => {
           size="middle"
           icon={<PlaySquareOutlined />}
         >
-          开始一场考试
+          举办一场考试
         </Button>
       </div>
       <NewPaper onRef={modelRef} onHandle={query} />
@@ -176,12 +176,12 @@ const ExamManage = () => {
           preserve={false}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item label="时间限制" name="minutes">
+          {/* <Form.Item label="时间限制" name="minutes">
             <Input addonAfter="分钟" />
           </Form.Item>
           <Form.Item label="人数限制" name="peopleNum">
             <Input addonAfter="人" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="state"
             style={{ marginTop: "10px" }}

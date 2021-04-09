@@ -91,7 +91,7 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
   return (
     <Modal
       width="1024px"
-      title="开始一场考试"
+      title="举办一场考试"
       visible={visible}
       destroyOnClose
       onOk={handleOk}
@@ -101,31 +101,31 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
         <Form.Item name="paperName" label="试卷名" required>
           <Input style={{ width: "380px" }} placeholder="请输入试卷名" />
         </Form.Item>
-        <Form.Item
-          name="randomStr"
-          label="口令"
-          tooltip={"考试人员以此参与考试"}
-          required
-        >
-          <Input style={{ width: "280px" }} placeholder="请输入口令" />
-        </Form.Item>
         <Space size="middle">
           <Form.Item
+            name="randomStr"
+            label="口令"
+            tooltip={"考试人员以此参与考试"}
+            required
+          >
+            <Input style={{ width: "280px" }} placeholder="请输入口令" />
+          </Form.Item>
+          {/* <Form.Item
             name="minutes"
             style={{ marginTop: "10px" }}
             label="考试时间"
             required
           >
             <Input style={{ width: "120px" }} addonAfter="分钟" />
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             name="peopleNum"
             style={{ marginTop: "10px" }}
             label="人数限制"
             required
           >
             <Input style={{ width: "120px" }} addonAfter="个" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="questionNum"
             style={{ marginTop: "10px" }}
