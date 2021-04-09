@@ -1,4 +1,4 @@
-import { createRef, useEffect } from "react";
+import { createRef } from "react";
 import { fetchByBody } from "../../api/api";
 import AutoTable from "../../components/AutoTable";
 

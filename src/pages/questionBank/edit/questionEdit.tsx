@@ -36,9 +36,13 @@ const QuestionEdit = memo(
             message.error("答案或正确答案不能全部为空");
             return;
           }
+          if (rightAnswer.length === 1 && wrongAnswer.length === 0) {
+            message.error("你必须使该题目具有意义");
+            return;
+          }
           const rightJson = JSON.stringify(rightAnswer);
           const wrongJson = JSON.stringify(wrongAnswer);
-          const type = rightAnswer.length > 1 ? 2 : 1;          
+          const type = rightAnswer.length > 1 ? 2 : 1;
           const data = {
             id: activeItem?.id,
             bankId,
