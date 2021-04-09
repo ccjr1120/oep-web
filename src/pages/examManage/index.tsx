@@ -6,6 +6,7 @@ import Filter from "./filter";
 import { PlaySquareOutlined } from "@ant-design/icons";
 import NewPaper from "./newPaper";
 import Modal from "antd/lib/modal/Modal";
+import ExamRecord from "./examRecord";
 
 const ExamManage = () => {
   const columns = [
@@ -23,7 +24,6 @@ const ExamManage = () => {
       width: "120px",
       align: "center",
     },
-
     {
       title: "状态",
       dataIndex: "state",
@@ -36,22 +36,6 @@ const ExamManage = () => {
         </Tag>
       ),
     },
-    // {
-    //   title: "时间限制",
-    //   dataIndex: "minutes",
-    //   key: "minutes",
-    //   width: "80px",
-    //   align: "center",
-    //   render: (value: String) => <div>{value}分钟</div>,
-    // },
-    // {
-    //   title: "人数限制",
-    //   dataIndex: "peopleNum",
-    //   key: "peopleNum",
-    //   width: "80px",
-    //   align: "center",
-    //   render: (value: String) => <div>{value}人</div>,
-    // },
     {
       title: "考试时间",
       dataIndex: "createTime",
@@ -65,8 +49,17 @@ const ExamManage = () => {
       key: "partNum",
       width: "80px",
       align: "center",
-      render: (value: String, record: MenuType.RecordType) => (
-        <Button type="text" style={{ color: "#1890ff" }} size="small">
+      render: (value: String, record: any) => (
+        <Button
+          type="text"
+          onClick={() => {
+            setExamId(record.id);
+            setExamName(record.name);
+            recordModelRef.current?.changeVisible();
+          }}
+          style={{ color: "#1890ff" }}
+          size="small"
+        >
           {value}
         </Button>
       ),
@@ -117,6 +110,7 @@ const ExamManage = () => {
     setCondition(data);
   };
   const modelRef = createRef<any>();
+  const recordModelRef = createRef<any>();
   const showModal = () => {
     if (modelRef.current) {
       modelRef.current.changeVisible();
@@ -129,6 +123,8 @@ const ExamManage = () => {
   };
   const [visible, setVisible] = useState(false);
   const [activeRecord, setActiveRecord] = useState<any>();
+  const [examId, setExamId] = useState();
+  const [examName, setExamName] = useState();
   const [form] = Form.useForm();
   const handleOk = () => {
     let data = { id: activeRecord.id, ...form.getFieldsValue() };
@@ -158,6 +154,7 @@ const ExamManage = () => {
         </Button>
       </div>
       <NewPaper onRef={modelRef} onHandle={query} />
+      <ExamRecord onRef={recordModelRef} examName={examName} examId={examId} />
       <Modal
         title="编辑试卷"
         visible={visible}
