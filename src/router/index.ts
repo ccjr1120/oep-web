@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import ExamManage from "../pages/examManage";
 import MyExam from "../pages/myExam";
+import PersonalCenter from "../pages/personal";
 import QuestionBank from "../pages/questionBank";
 import BankEdit from "../pages/questionBank/edit";
 import StartExam from "../pages/startExam";
@@ -44,6 +45,11 @@ const routes: Array<IRoute> = [
     path: "/app/myExam",
     component: MyExam,
     name: "账号管理",
+  },
+  {
+    path: "/app/personal",
+    component: PersonalCenter,
+    name: "个人信息",
   },
 ];
 
