@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Select, Tag } from "antd";
+import { Button, Form, message, Select, Tag } from "antd";
 import { createRef, useState } from "react";
 import { fetchByBody } from "../../api/api";
 import AutoTable, { AutoTableRefType } from "../../components/AutoTable";
