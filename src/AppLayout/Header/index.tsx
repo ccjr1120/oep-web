@@ -1,11 +1,12 @@
 import Avatar from "antd/lib/avatar/avatar";
-import { UserOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, message } from "antd";
 import { useHistory } from "react-router";
 import { fetchByBody } from "../../api/api";
-
+import store from "../../store";
 const DropAvatar = () => {
   const history = useHistory();
+  const session: any = sessionStorage.getItem("user")!;
+  const avatarUrl = "http://localhost:8080" + JSON.parse(session).avatarUrl;
   const handleLogout = () => {
     fetchByBody("/logout", {}).then(() => {
       message.success("注销成功");
@@ -26,7 +27,14 @@ const DropAvatar = () => {
 
   return (
     <Dropdown overlay={dropMenu}>
-      <Avatar size={42} icon={<UserOutlined />} />
+      <Avatar
+        src={
+          store.getState().avatarUrl !== ""
+            ? store.getState().avatarUrl
+            : avatarUrl
+        }
+        size={42}
+      />
     </Dropdown>
   );
 };

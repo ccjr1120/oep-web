@@ -2,7 +2,8 @@ import { Avatar, Button, Card, Form, Input, Tabs, Upload } from "antd";
 import "./index.scss";
 import { PlusOutlined } from "@ant-design/icons";
 import { fetchByFile } from "../../api/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import store from "../../store";
 
 const { TabPane } = Tabs;
 
@@ -13,7 +14,13 @@ const PersonalCenter = () => {
     params.append("file", file);
     fetchByFile("/common/upload", params).then((resp: any) => {
       if (resp.code === 0) {
-        setAvatarUrl("http://localhost:8080" + resp.data);
+        let url = "http://localhost:8080" + resp.data;
+        setAvatarUrl(url);
+        const addAction = {
+          type: 1,
+          avatarUrl: url,
+        };
+        store.dispatch(addAction);
       }
     });
   };
@@ -33,7 +40,7 @@ const PersonalCenter = () => {
                   position: "relative",
                 }}
               >
-                <Avatar size={128}></Avatar>
+                <Avatar size={128} src={avatarUrl}></Avatar>
                 <div
                   style={{
                     position: "absolute",

@@ -8,8 +8,8 @@ const Login = ({ history }: any) => {
   const onFinish = (values: any) => {
     fetchByParam("/login", values).then((resp) => {
       message.success("登录成功");
-      sessionStorage.setItem("user", resp.data);
-      history.push("/app/overview");
+      sessionStorage.setItem("user", JSON.stringify(resp.data));
+      history.push("/app/personal");
     });
   };
   return (
