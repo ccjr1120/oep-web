@@ -60,14 +60,6 @@ const ExamManage = () => {
       align: "center",
     },
     {
-      title: "是否随机",
-      dataIndex: "isRandom",
-      key: "isRandom",
-      width: "80px",
-      align: "center",
-      render: (value: number) => <> {value === 0 ? "否" : "是"}</>,
-    },
-    {
       title: "参与人数",
       dataIndex: "partNum",
       key: "partNum",
@@ -78,6 +70,14 @@ const ExamManage = () => {
           {value}
         </Button>
       ),
+    },
+    {
+      title: "是否随机",
+      dataIndex: "isRandom",
+      key: "isRandom",
+      width: "80px",
+      align: "center",
+      render: (value: number) => <> {value === 0 ? "否" : "是"}</>,
     },
     {
       title: "平均分",

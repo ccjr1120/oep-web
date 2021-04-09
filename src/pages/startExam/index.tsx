@@ -5,6 +5,7 @@ import { fetchByBody, fetchByParam } from "../../api/api";
 import { SaveOutlined, SmileTwoTone } from "@ant-design/icons";
 import QuesItem from "./quesItem";
 import confirm from "antd/lib/modal/confirm";
+import CountTo from "react-count-to";
 
 const StartExam = ({ history }: any) => {
   const [visible, setVisible] = useState(false);
@@ -13,6 +14,8 @@ const StartExam = ({ history }: any) => {
   const [key, setKey] = useState();
   const [loading, setLoading] = useState(false);
   const [answerList, setAnswerList] = useState<Array<number>>([]);
+  const [result, setResult] = useState<number>(0);
+  const [resultVisible, setResultVisible] = useState<boolean>(false);
   const handleModelOk = () => {
     fetchByParam("/student/exam/start", { key: key })
       .then((resp) => {
@@ -102,6 +105,8 @@ const StartExam = ({ history }: any) => {
               cancelText: "取消",
               onOk() {
                 fetchByBody("/student/exam/done", {}).then((resp) => {
+                  setResult(resp.data);
+                  setResultVisible(true);
                   message.success("提交成功");
                 });
               },
@@ -126,6 +131,23 @@ const StartExam = ({ history }: any) => {
           {hintText}
         </div>
       </div>
+      <Modal
+        title="计算成绩中"
+        visible={resultVisible}
+        closable={false}
+        okButtonProps={{ disabled: !key }}
+        width="240px"
+        onOk={() => {
+          history.push("/app/myExam");
+        }}
+        onCancel={() => {
+          history.push("/app/myExam");
+        }}
+      >
+        <div className="count-down">
+          <CountTo to={result} speed={4234} />
+        </div>
+      </Modal>
       <Modal
         title="输入口令"
         visible={visible}
