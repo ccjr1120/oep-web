@@ -1,14 +1,13 @@
-import { Avatar, Button, Card, Form, Input, Tabs, Upload } from "antd";
+import { Avatar, Button, Card, Form, Input, message, Tabs, Upload } from "antd";
 import "./index.scss";
 import { PlusOutlined } from "@ant-design/icons";
-import { fetchByFile } from "../../api/api";
-import { useState } from "react";
+import { fetchByBody, fetchByFile, fetchByParam } from "../../api/api";
+import { useEffect, useState } from "react";
 import store from "../../store";
 
 const { TabPane } = Tabs;
 
 const PersonalCenter = () => {
-  const [avatarUrl, setAvatarUrl] = useState<string>();
   const handleUpload = ({ file }: any) => {
     let params = new FormData();
     params.append("file", file);
@@ -24,6 +23,44 @@ const PersonalCenter = () => {
       }
     });
   };
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [userInfo, setUserInfo] = useState<any>({});
+  const [infoForm] = Form.useForm();
+  const [pwdForm] = Form.useForm();
+  const handleSave = () => {
+    infoForm
+      .validateFields()
+      .then(() => {
+        fetchByBody("/common/updateUserInfo", infoForm.getFieldsValue()).then(
+          (resp) => {
+            setUserInfo(resp.data);
+            message.success("更新成功");
+          }
+        );
+      })
+      .catch(() => {});
+  };
+  const handlePwd = () => {
+    const p1 = pwdForm.getFieldValue("againPwd");
+    const p2 = pwdForm.getFieldValue("newPwd");
+    if (!p1 || p1.length === 0 || p1 !== p2) {
+      message.error("重复密码校验失败");
+      return;
+    }
+    fetchByParam("/common/updatePwd", pwdForm.getFieldsValue()).then(() => {
+      message.success("更新成功");
+    });
+  };
+  useEffect(() => {
+    fetchByBody("/common/baseUserInfo", {}).then((resp) => {
+      setAvatarUrl("http://localhost:8080" + resp.data.avatarUrl);
+      setUserInfo(resp.data);
+      infoForm.setFieldsValue({
+        name: resp.data.name,
+        username: resp.data.username,
+      });
+    });
+  }, [infoForm]);
   return (
     <>
       <Card>
@@ -60,19 +97,19 @@ const PersonalCenter = () => {
               <ul style={{ paddingLeft: "24px" }}>
                 <li>
                   <span>用户姓名:</span>
-                  <span>admin</span>
+                  <span>{userInfo.name}</span>
                 </li>
                 <li>
                   <span>登录账号:</span>
-                  <span>admin</span>
+                  <span>{userInfo.username}</span>
                 </li>
                 <li>
                   <span>创建时间:</span>
-                  <span>2021-12-02</span>
+                  <span>{userInfo.createTime}</span>
                 </li>
                 <li>
                   <span>最后更新时间:</span>
-                  <span>2203-12-43</span>
+                  <span>{userInfo.updateTime}</span>
                 </li>
               </ul>
             </Card>
@@ -85,17 +122,28 @@ const PersonalCenter = () => {
               >
                 <Tabs>
                   <TabPane tab="基本资料" key="1">
-                    <Form style={{ margin: "24px 0" }}>
-                      <Form.Item label="用户姓名">
-                        <Input />
+                    <Form form={infoForm} style={{ margin: "24px 0" }}>
+                      <Form.Item
+                        name="name"
+                        rules={[{ required: true, message: "请输入用户名!" }]}
+                        label="用户姓名"
+                      >
+                        <Input allowClear />
                       </Form.Item>
-                      <Form.Item label="登录账号">
-                        <Input />
+                      <Form.Item
+                        name="username"
+                        label="登录账号"
+                        rules={[{ required: true, message: "请输入用户名!" }]}
+                      >
+                        <Input allowClear />
                       </Form.Item>
                       <Form.Item>
                         <Button
                           style={{ float: "right", width: "120px" }}
                           type="primary"
+                          onClick={() => {
+                            handleSave();
+                          }}
                         >
                           保存
                         </Button>
@@ -104,23 +152,27 @@ const PersonalCenter = () => {
                   </TabPane>
                   <TabPane tab="修改密码" key="2">
                     <Form
+                      form={pwdForm}
                       style={{ margin: "24px 0" }}
                       labelCol={{ span: 3 }}
                       labelAlign="right"
                     >
-                      <Form.Item label="旧密码">
+                      <Form.Item name="oldPwd" label="旧密码">
                         <Input />
                       </Form.Item>
-                      <Form.Item label="新密码">
+                      <Form.Item name="newPwd" label="新密码">
                         <Input />
                       </Form.Item>
-                      <Form.Item label="重复密码">
+                      <Form.Item name="againPwd" label="重复密码">
                         <Input />
                       </Form.Item>
                       <Form.Item>
                         <Button
                           style={{ float: "right", width: "120px" }}
                           type="primary"
+                          onClick={() => {
+                            handlePwd();
+                          }}
                         >
                           保存
                         </Button>
