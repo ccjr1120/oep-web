@@ -5,9 +5,13 @@ import { fetchByBody } from "../../api/api";
 import store from "../../store";
 const DropAvatar = () => {
   const history = useHistory();
-  const session: any = sessionStorage.getItem("user")!;
-  const avatarUrl = "http://localhost:8080" + JSON.parse(session).avatarUrl;
+  const userItem: any = sessionStorage.getItem("user")!;
+  let avatarUrl = "";
+  if (userItem) {
+    avatarUrl = "http://localhost:8080" + JSON.parse(userItem).avatarUrl;
+  }
   const handleLogout = () => {
+    sessionStorage.clear();
     fetchByBody("/logout", {}).then(() => {
       message.success("注销成功");
       history.push("/login");

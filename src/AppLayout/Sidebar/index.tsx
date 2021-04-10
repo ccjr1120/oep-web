@@ -88,9 +88,12 @@ const loopMenu = (menuList: Array<MenuType>) => {
 const MySidebar = () => {
   const [menuList, setMenuList] = useState<Array<MenuType>>([]);
   useEffect(() => {
-    fetchByBody("/common/curMenus", {}).then((resp) => {
-      setMenuList(resp.data);
-    });
+    const userItem: any = sessionStorage.getItem("user")!;
+    if (userItem) {
+      fetchByBody("/common/curMenus", {}).then((resp) => {
+        setMenuList(resp.data);
+      });
+    }
   }, []);
   return (
     <div style={{ height: "100%" }}>
