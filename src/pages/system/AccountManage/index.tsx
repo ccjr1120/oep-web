@@ -41,19 +41,25 @@ const AccountManage = () => {
       ),
     },
     {
-      title: "锁定状态",
-      dataIndex: "lockFlag",
-      key: "lockFlag",
-      render: (_: String, record: AcctType.RecordType) => (
-        <div>
-          {record.lockFlag ? (
-            <Tag color="red">锁定</Tag>
-          ) : (
-            <Tag color="cyan">启用</Tag>
-          )}
-        </div>
-      ),
+      title: "创建时间",
+      dataIndex: "createTime",
+      key: "createTime",
+      width: "240px",
     },
+    // {
+    //   title: "锁定状态",
+    //   dataIndex: "lockFlag",
+    //   key: "lockFlag",
+    //   render: (_: String, record: AcctType.RecordType) => (
+    //     <div>
+    //       {record.lockFlag ? (
+    //         <Tag color="red">锁定</Tag>
+    //       ) : (
+    //         <Tag color="cyan">启用</Tag>
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       title: "操作",
       key: "option",

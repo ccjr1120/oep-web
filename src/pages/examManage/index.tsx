@@ -1,4 +1,4 @@
-import { Button, Form, message, Select, Tag } from "antd";
+import { Button, Form, Input, message, Select, Tag } from "antd";
 import { createRef, useState } from "react";
 import { fetchByBody } from "../../api/api";
 import AutoTable, { AutoTableRefType } from "../../components/AutoTable";
@@ -37,10 +37,10 @@ const ExamManage = () => {
       ),
     },
     {
-      title: "考试时间",
-      dataIndex: "createTime",
-      key: "createTime",
-      width: "160px",
+      title: "人数限制",
+      dataIndex: "peopleNum",
+      key: "peopleNum",
+      width: "90px",
       align: "center",
     },
     {
@@ -63,6 +63,13 @@ const ExamManage = () => {
           {value}
         </Button>
       ),
+    },
+    {
+      title: "考试时间",
+      dataIndex: "createTime",
+      key: "createTime",
+      width: "160px",
+      align: "center",
     },
     {
       title: "是否随机",
@@ -175,10 +182,10 @@ const ExamManage = () => {
         >
           {/* <Form.Item label="时间限制" name="minutes">
             <Input addonAfter="分钟" />
-          </Form.Item>
+      </Form.Item>*/}
           <Form.Item label="人数限制" name="peopleNum">
             <Input addonAfter="人" />
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item
             name="state"
             style={{ marginTop: "10px" }}

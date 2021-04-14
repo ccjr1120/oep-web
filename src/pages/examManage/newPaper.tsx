@@ -105,10 +105,11 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
           <Form.Item
             name="randomStr"
             label="口令"
+            style={{ marginTop: "10px" }}
             tooltip={"考试人员以此参与考试"}
             required
           >
-            <Input style={{ width: "280px" }} placeholder="请输入口令" />
+            <Input style={{ width: "220px" }} placeholder="请输入口令" />
           </Form.Item>
           {/* <Form.Item
             name="minutes"
@@ -118,14 +119,14 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
           >
             <Input style={{ width: "120px" }} addonAfter="分钟" />
           </Form.Item> */}
-          {/* <Form.Item
+          <Form.Item
             name="peopleNum"
             style={{ marginTop: "10px" }}
             label="人数限制"
             required
           >
-            <Input style={{ width: "120px" }} addonAfter="个" />
-          </Form.Item> */}
+            <Input style={{ width: "100px" }} addonAfter="个" />
+          </Form.Item>
           <Form.Item
             name="questionNum"
             style={{ marginTop: "10px" }}
