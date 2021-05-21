@@ -43,7 +43,7 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
         changeVisible();
         onHandle();
       })
-      .catch(() => {});
+      .catch(() => { });
   };
   const handleCancel = () => {
     changeVisible();
@@ -98,10 +98,11 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
       onCancel={handleCancel}
     >
       <Form form={form} size="small" preserve={false} layout="inline">
-        <Form.Item name="paperName" label="试卷名" required>
-          <Input style={{ width: "380px" }} placeholder="请输入试卷名" />
-        </Form.Item>
         <Space size="middle">
+
+          <Form.Item name="paperName" label="试卷名" required>
+            <Input style={{ width: "380px" }} placeholder="请输入试卷名" />
+          </Form.Item>
           <Form.Item
             name="randomStr"
             label="口令"
@@ -111,14 +112,16 @@ const NewPaper = memo(({ onRef, onHandle }: any, ref) => {
           >
             <Input style={{ width: "220px" }} placeholder="请输入口令" />
           </Form.Item>
-          {/* <Form.Item
+        </Space>
+        <Space size="middle">
+          <Form.Item
             name="minutes"
             style={{ marginTop: "10px" }}
             label="考试时间"
             required
           >
             <Input style={{ width: "120px" }} addonAfter="分钟" />
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item
             name="peopleNum"
             style={{ marginTop: "10px" }}
